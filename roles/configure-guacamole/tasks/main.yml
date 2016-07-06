@@ -1,0 +1,8 @@
+---
+
+- name: Make /etc/guacamole/ directory
+  file: path=/etc/guacamole state=directory
+  tags: configuration
+
+- name: Add user-mapping.xml and guacamole.properties templates
+  template: 

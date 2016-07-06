@@ -1,0 +1,32 @@
+---
+
+- name: Downlaod the guacamole-server source
+  get_url: url="http://sourceforge.net/projects/guacamole/files/current/source/guacamole-server-0.9.9.tar.gz" dest="/etc/"
+  tags: download
+
+- name: Extract the guacamole-server source
+  unarchive: src="/etc/guacamole-server-0.9.9.tar.gz" copy=no dest="/etc/"
+  tags: extract
+
+- name: Build guacamole-server from source (./configure)
+  command: ./configure chdir=/etc/guacamole-server-0.9.9
+  tags: build, install
+
+- name: Build guacamole-server from source (make)
+  command: make chdir=/etc/guacamole-server-0.9.9
+  tags: build, install
+
+- name: Build guacamole-server from source (make install)
+  command: make install chdir=/etc/guacamole-server-0.9.9
+  tags: build, install
+
+- name: Get gaucamole.war
+  get_url: url="http://sourceforge.net/projects/guacamole/files/current/binary/guacamole-0.9.9.war" dest="/var/lib/tomcat7/webapps/guacamole.war" force=yes
+  tags: download
+
+### ISSUES: ###
+###############
+# - /var/lib/tomcat could also be tomcat6 tomcat7
+# - Need to restart tomcat and guacd
+# - Maybe need to ap install guacd
+# - Need to make templates for user-mapping.xml and guacamole.properties

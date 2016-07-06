@@ -1,0 +1,8 @@
+---
+
+- name: Playbook to install Guacamole HTML5 VNC client
+  hosts: hosts
+  remote_user: root
+  roles:
+    - install-dependencies
+    - install-guacamole
