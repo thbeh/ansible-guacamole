@@ -3,7 +3,9 @@
 PACKAGES:
   - cairo-devel
   - libjpeg-devel
+  - libjpeg-turbo-devel
   - libpng-devel
+  - libpng
   - uuid-devel
   # Optionals:
   - freerdp-devel
@@ -15,4 +17,6 @@ PACKAGES:
   - openssl-devel
   - libvorbis-devel
   - libwebp-devel
-  - tomcat7
+  - tomcat
+  - java-1.8.0-openjdk.x86_64
+  - guacd

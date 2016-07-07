@@ -1,8 +1,8 @@
 ---
 
-GUACD-HOSTNAME: localhost
+GUACD_HOSTNAME: localhost
 
-GUACD-PORT: 4822
+GUACD_PORT: 4822
 
 USERNAME: user
 

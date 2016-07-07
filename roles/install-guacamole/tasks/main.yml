@@ -1,5 +1,9 @@
 ---
 
+- name: Gather OS-specific variables
+  include_vars: "{{ ansible_distribution }}.yml"
+  tags: vars
+
 - name: Downlaod the guacamole-server source
   get_url: url="http://sourceforge.net/projects/guacamole/files/current/source/guacamole-server-0.9.9.tar.gz" dest="/etc/"
   tags: download
@@ -21,11 +25,11 @@
   tags: build, install
 
 - name: Get gaucamole.war
-  get_url: url="http://sourceforge.net/projects/guacamole/files/current/binary/guacamole-0.9.9.war" dest="/var/lib/tomcat7/webapps/guacamole.war" force=yes
+  get_url: url="http://sourceforge.net/projects/guacamole/files/current/binary/guacamole-0.9.9.war" dest="/var/lib/{{ TOMCAT_VERSION }}/webapps/guacamole.war" force=yes
   tags: download
 
-- name: restart tomcat7
-  service: name=tomcat7 state=restarted
+- name: restart tomcat
+  service: name={{ TOMCAT_VERSION }} state=restarted
   tags: restart
 
 - name: restart guacd
@@ -37,4 +41,4 @@
   tags: clear-files
 
 - name: delete guacamole-server-0.9.9 directory
-  file: path=/etc/guacamole-server-0.9.9 state=absent directory=true
+  file: path=/etc/guacamole-server-0.9.9 state=absent

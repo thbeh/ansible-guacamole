@@ -18,3 +18,5 @@ PACKAGES:
   - libvorbis-dev
   - libwebp-dev
   - tomcat7
+  - default-jdk
+  - guacd
