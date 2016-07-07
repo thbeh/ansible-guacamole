@@ -3,10 +3,10 @@ guacd-hostname: {{ GUACD_HOSTNAME }}
 guacd-port:     {{ GUACD_PORT }}
 
 # Location to read extra .jar's from
-lib-directory:  /var/lib/tomcat7/webapps/guacamole-0.9.9/WEB-INF/classes
+lib-directory:  /var/lib/{{ TOMCAT_VERSION }}/webapps/guacamole-0.9.9/WEB-INF/classes
 
 # Authentication provider class
 auth-provider: net.sourceforge.guacamole.net.basic.BasicFileAuthenticationProvider
 
 # Properties used by BasicFileAuthenticationProvider
-basic-user-mapping: /etc/guacamole/user-mapping.xml
+basic-user-mapping: {{ GUACAMOLE_HOME }}/user-mapping.xml
