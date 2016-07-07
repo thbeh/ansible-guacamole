@@ -23,3 +23,18 @@
 - name: Get gaucamole.war
   get_url: url="http://sourceforge.net/projects/guacamole/files/current/binary/guacamole-0.9.9.war" dest="/var/lib/tomcat7/webapps/guacamole.war" force=yes
   tags: download
+
+- name: restart tomcat7
+  service: name=tomcat7 state=restarted
+  tags: restart
+
+- name: restart guacd
+  service: name=guacd state=restarted
+  tags: restart
+
+- name: delete guacamole-server-0.9.9.tar.gz
+  file: path=/etc/guacamole-server-0.9.9.tar.gz state=absent
+  tags: clear-files
+
+- name: delete guacamole-server-0.9.9 directory
+  file: path=/etc/guacamole-server-0.9.9 state=absent directory=true

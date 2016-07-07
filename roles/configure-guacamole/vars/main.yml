@@ -1,0 +1,11 @@
+---
+
+GUACD-HOSTNAME: localhost
+
+GUACD-PORT: 4822
+
+USERNAME: user
+
+PASSWORD: password
+
+GUACAMOLE_HOME: /etc/guacamole

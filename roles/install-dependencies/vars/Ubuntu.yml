@@ -2,7 +2,6 @@
 
 PACKAGES:
   - libcairo2-dev
-  # - libjpeg62-dev
   - libjpeg-dev
   - libjpeg8-dev
   - libjpeg-turbo8-dev
