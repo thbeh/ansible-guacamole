@@ -7,6 +7,9 @@ PACKAGES:
   - libjpeg-turbo8-dev
   - libpng12-dev
   - libossp-uuid-dev
+  - tomcat6
+  - default-jdk
+  - guacd
   # Optionals:
   - libfreerdp-dev
   - libpango1.0-dev
@@ -17,7 +20,3 @@ PACKAGES:
   - libssl-dev
   - libvorbis-dev
   - libwebp-dev
-  #not optional
-  - tomcat6
-  - default-jdk
-  - guacd

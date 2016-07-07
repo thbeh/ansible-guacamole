@@ -7,6 +7,9 @@ PACKAGES:
   - libpng-devel
   - libpng
   - uuid-devel
+  - tomcat
+  - java-1.8.0-openjdk.x86_64
+  - guacd
   # Optionals:
   - freerdp-devel
   - pango-devel
@@ -17,6 +20,3 @@ PACKAGES:
   - openssl-devel
   - libvorbis-devel
   - libwebp-devel
-  - tomcat
-  - java-1.8.0-openjdk.x86_64
-  - guacd

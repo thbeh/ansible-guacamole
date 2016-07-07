@@ -13,7 +13,7 @@
   tags: extract
 
 - name: Build guacamole-server from source (./configure)
-  command: ./configure chdir=/etc/guacamole-server-0.9.9
+  command: ./configure --with-init-dir=/etc/init.d chdir=/etc/guacamole-server-0.9.9
   tags: build, install
 
 - name: Build guacamole-server from source (make)
@@ -23,6 +23,9 @@
 - name: Build guacamole-server from source (make install)
   command: make install chdir=/etc/guacamole-server-0.9.9
   tags: build, install
+
+- name: Build guacamole-server from source (ldconfig)
+  command: ldconfig
 
 - name: Get gaucamole.war
   get_url: url="http://sourceforge.net/projects/guacamole/files/current/binary/guacamole-0.9.9.war" dest="/var/lib/{{ TOMCAT_VERSION }}/webapps/guacamole.war" force=yes
@@ -42,3 +45,4 @@
 
 - name: delete guacamole-server-0.9.9 directory
   file: path=/etc/guacamole-server-0.9.9 state=absent
+  tags: clear-files
