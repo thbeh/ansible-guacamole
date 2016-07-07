@@ -13,6 +13,4 @@
   action: >
     {{ ansible_pkg_mgr }} name={{ item }} state=latest
   with_items: '{{ PACKAGES }}'
-  ignore_errors: yes
-
   tags: install

@@ -17,6 +17,7 @@ PACKAGES:
   - libssl-dev
   - libvorbis-dev
   - libwebp-dev
+  #not optional
   - tomcat6
   - default-jdk
   - guacd
