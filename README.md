@@ -8,9 +8,11 @@ Current tomcat version: tomcat6 (Ubuntu), tomcat (CentOS)
 
 ----------------------------------------------------------------------------------
 
-- Need to find a way to configure clients and servers with shared credentials/connections
-- The login page shows up but does not accept the credentials "user":"password"
-- Login page does not show up on ubuntu
+- Need to find a way to configure clients and servers with shared credentials/connections (LDAP probably)
+- From the server, my additional connections show up but cannot connect (need to change tightvncserver creds)
+	- after changing the specified port in user-mapping.xml on server, no longer says I am unable to connect but also is not connecting (no timeout)
+	- localhost VNC does work on server
+- I need to add tightvnc setup to Ansible bc I am doing that manually right now (focusing on guacamole)
 
 [From "Configuring Guacamole":](http://guacamole.incubator.apache.org/doc/gug/configuring-guacamole.html)
 > Guacamole reads files from its own configuration directory by default, resorting to the classpath only when this directory cannot be found. When locating this directory, Guacamole will try, in order:
@@ -19,7 +21,7 @@ Current tomcat version: tomcat6 (Ubuntu), tomcat (CentOS)
 >	- The directory specified within the environment variable GUACAMOLE_HOME.
 >	- The directory .guacamole, located within the home directory of the user running the servlet container.
 
-We will use the third option, with the configuration directory `/var/lib/tomcat/.guacamole`
+We will use the third option, with the configuration directory `/usr/share/tomcat6/.guacamole`
 
 ----------------------------------------------------------------------------------
 
@@ -34,4 +36,4 @@ We will use the third option, with the configuration directory `/var/lib/tomcat/
   </connection>
   ```
 
-2. 
+2. On client machines, change guacd-hostname in `guacamole.properties` to match the address of your server
