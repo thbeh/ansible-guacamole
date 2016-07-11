@@ -8,7 +8,7 @@ USERNAME: user
 
 PASSWORD: password
 
-GUACAMOLE_HOME: /var/lib/{{ TOMCAT_VERSION }}/.guacamole
+GUACAMOLE_HOME: /usr/share/{{ TOMCAT_VERSION }}/.guacamole
 
 GUACAMOLE_VERSION: guacamole-client-0.9.9
 
