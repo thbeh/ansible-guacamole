@@ -1,5 +1,8 @@
 # ansible-guacamole
 
+Current guacamole version: 0.9.9
+Current tomcat version: tomcat6 (Ubuntu), tomcat (CentOS)
+
 ### ISSUES:
 ----------------
 - Need to find a way to configure clients and servers with shared credentials/connections
