@@ -20,23 +20,23 @@
 ### Install guacamole-server
 
 - name: Downlaod the guacamole-server source
-  get_url: url="http://sourceforge.net/projects/guacamole/files/current/source/guacamole-server-0.9.9.tar.gz" dest="/etc/"
+  get_url: url="http://sourceforge.net/projects/guacamole/files/current/source/{{ GUACAMOLE_VERSION }}.tar.gz" dest="/tmp/"
   tags: download
 
 - name: Extract the guacamole-server source
-  unarchive: src="/etc/guacamole-server-0.9.9.tar.gz" copy=no dest="/etc/"
+  unarchive: src="/tmp/{{ GUACAMOLE_VERSION }}.tar.gz" copy=no dest="/tmp/"
   tags: extract
 
 - name: Build guacamole-server from source (./configure)
-  command: ./configure --with-init-dir=/etc/init.d chdir=/etc/guacamole-server-0.9.9
+  command: ./configure --with-init-dir=/etc/init.d chdir=/tmp/{{ GUACAMOLE_VERSION }}
   tags: build, install
 
 - name: Build guacamole-server from source (make)
-  command: make chdir=/etc/guacamole-server-0.9.9
+  command: make chdir=/tmp/{{ GUACAMOLE_VERSION }}
   tags: build, install
 
 - name: Build guacamole-server from source (make install)
-  command: make install chdir=/etc/guacamole-server-0.9.9
+  command: make install chdir=/tmp/{{ GUACAMOLE_VERSION }}
   tags: build, install
 
 - name: Build guacamole-server from source (ldconfig)
@@ -54,12 +54,12 @@
   service: name=guacd state=restarted
   tags: restart
 
-- name: delete guacamole-server-0.9.9.tar.gz
-  file: path=/etc/guacamole-server-0.9.9.tar.gz state=absent
+- name: delete {{ GUACAMOLE_VERSION }}.tar.gz
+  file: path=/tmp/{{ GUACAMOLE_VERSION }}.tar.gz state=absent
   tags: clear-files
 
-- name: delete guacamole-server-0.9.9 directory
-  file: path=/etc/guacamole-server-0.9.9 state=absent
+- name: delete {{ GUACAMOLE_VERSION }} directory
+  file: path=/tmp/{{ GUACAMOLE_VERSION }} state=absent
   tags: clear-files
 
 ### Configure guacamole-server
