@@ -1,13 +1,13 @@
 # ansible-guacamole
 
-####Current guacamole version:
-0.9.9
+Current guacamole version: 0.9.9
 
-####Current tomcat version:
-tomcat6 (Ubuntu), tomcat (CentOS)
+Current tomcat version: tomcat6 (Ubuntu), tomcat (CentOS)
 
 ## ISSUES:
-----------------
+
+----------------------------------------------------------------------------------
+
 - Need to find a way to configure clients and servers with shared credentials/connections
 - The login page shows up but does not accept the credentials "user":"password"
 - Login page does not show up on ubuntu
@@ -20,3 +20,18 @@ tomcat6 (Ubuntu), tomcat (CentOS)
 >	- The directory .guacamole, located within the home directory of the user running the servlet container.
 
 We will use the third option, with the configuration directory `/var/lib/tomcat/.guacamole`
+
+----------------------------------------------------------------------------------
+
+## Use
+1. add to user-mapping.xml on the server
+  	```
+  <connection name="atmoVM">
+     <protocol>vnc</protocol>
+     <param name="hostname">128.196.64.70</param>
+     <param name="port">5901</param>
+     <param name="password">password</param>
+  </connection>
+  ```
+
+2. 
