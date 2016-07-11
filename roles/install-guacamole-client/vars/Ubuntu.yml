@@ -3,6 +3,6 @@
 TOMCAT_VERSION: tomcat6
 
 PACKAGES:
-  - {{ TOMCAT_VERSION }}
+  - "{{ TOMCAT_VERSION }}"
   - default-jdk
   - maven

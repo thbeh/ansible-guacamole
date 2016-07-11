@@ -3,6 +3,6 @@
 TOMCAT_VERSION: tomcat
 
 PACKAGES:
-  - {{ TOMCAT_VERSION }}
+  - "{{ TOMCAT_VERSION }}"
   - java-1.8.0-openjdk.x86_64
   - maven
