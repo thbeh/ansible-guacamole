@@ -1,0 +1,24 @@
+---
+
+TOMCAT_VERSION: tomcat6
+
+PACKAGES:
+  - libcairo2-dev
+  - libjpeg-dev
+  - libjpeg8-dev
+  - libjpeg-turbo8-dev
+  - libpng12-dev
+  - libossp-uuid-dev
+  - tomcat6
+  - default-jdk
+  - guacd
+  # Optionals:
+  - libfreerdp-dev
+  - libpango1.0-dev
+  - libssh2-1-dev
+  - libtelnet-dev
+  - libvncserver-dev
+  - libpulse-dev
+  - libssl-dev
+  - libvorbis-dev
+  - libwebp-dev

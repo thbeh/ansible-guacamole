@@ -1,0 +1,88 @@
+---
+
+- name: Gather OS-specific variables
+  include_vars: "{{ ansible_distribution }}.yml"
+  tags: vars
+
+- name: Install epel-release for CentOS
+  yum: name=epel-release state=latest update_cache=yes
+  when: ansible_distribution == "CentOS"
+  tags: install
+
+- name: Install dependencies for guacamole
+  action: >
+    {{ ansible_pkg_mgr }} name={{ item }} state=latest
+  with_items: '{{ PACKAGES }}'
+  tags: install
+
+- name: Gather OS-specific variables
+  include_vars: "{{ ansible_distribution }}.yml"
+  tags: vars
+
+- name: Downlaod the guacamole-server source
+  get_url: url="http://sourceforge.net/projects/guacamole/files/current/source/guacamole-server-0.9.9.tar.gz" dest="/etc/"
+  tags: download
+
+- name: Extract the guacamole-server source
+  unarchive: src="/etc/guacamole-server-0.9.9.tar.gz" copy=no dest="/etc/"
+  tags: extract
+
+- name: Build guacamole-server from source (./configure)
+  command: ./configure --with-init-dir=/etc/init.d chdir=/etc/guacamole-server-0.9.9
+  tags: build, install
+
+- name: Build guacamole-server from source (make)
+  command: make chdir=/etc/guacamole-server-0.9.9
+  tags: build, install
+
+- name: Build guacamole-server from source (make install)
+  command: make install chdir=/etc/guacamole-server-0.9.9
+  tags: build, install
+
+- name: Build guacamole-server from source (ldconfig)
+  command: ldconfig
+
+- name: Get gaucamole.war
+  get_url: url="http://sourceforge.net/projects/guacamole/files/current/binary/guacamole-0.9.9.war" dest="/var/lib/{{ TOMCAT_VERSION }}/webapps/guacamole.war" force=yes
+  tags: download
+
+- name: restart tomcat
+  service: name={{ TOMCAT_VERSION }} state=restarted
+  tags: restart
+
+- name: restart guacd
+  service: name=guacd state=restarted
+  tags: restart
+
+- name: delete guacamole-server-0.9.9.tar.gz
+  file: path=/etc/guacamole-server-0.9.9.tar.gz state=absent
+  tags: clear-files
+
+- name: delete guacamole-server-0.9.9 directory
+  file: path=/etc/guacamole-server-0.9.9 state=absent
+  tags: clear-files
+
+- name: Gather OS-specific variables
+  include_vars: "{{ ansible_distribution }}.yml"
+  tags: vars
+
+- name: Make '{{ GUACAMOLE_HOME }}' directory
+  file: path='{{ GUACAMOLE_HOME }}' state=directory
+  tags: configuration
+
+- name: Add guacamole.properties to "{{GUACAMOLE_HOME}}"
+  template: src="guacamole.properties.j2" dest="{{ GUACAMOLE_HOME }}/guacamole.properties"
+  tags: template
+
+- name: Add user-mapping.xml to "{{ GUACAMOLE_HOME }}"
+  template: src="user-mapping.xml.j2" dest="{{ GUACAMOLE_HOME }}/user-mapping.xml"
+  tags: template
+
+- name: restart tomcat
+  service: name={{ TOMCAT_VERSION }} state=restarted
+  tags: restart
+
+- name: restart guacd
+  service: name=guacd state=restarted
+  tags: restart
+  

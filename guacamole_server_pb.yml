@@ -4,6 +4,4 @@
   hosts: hosts
   remote_user: root
   roles:
-    - install-dependencies
-    - install-guacamole
-    - configure-guacamole
+    - install-guacamole-server
