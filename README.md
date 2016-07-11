@@ -7,7 +7,8 @@
 - Login page does not show up on ubuntu
 
 > Guacamole reads files from its own configuration directory by default, resorting to the classpath only when this directory cannot be found. When locating this directory, Guacamole will try, in order:
-	- The directory specified within the system property guacamole.home.
+
+>	- 	- The directory specified within the system property guacamole.home.
 	- The directory specified within the environment variable GUACAMOLE_HOME.
 	- The directory .guacamole, located within the home directory of the user running the servlet container.
 
