@@ -8,5 +8,4 @@ USERNAME: user
 
 PASSWORD: password
 
-GUACAMOLE_HOME: /etc/guacamole
-#/var/lib/{{ TOMCAT_VERSION }}/.guacamole
+GUACAMOLE_HOME: /var/lib/{{ TOMCAT_VERSION }}/.guacamole

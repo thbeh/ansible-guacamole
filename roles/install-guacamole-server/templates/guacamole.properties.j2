@@ -1,0 +1,12 @@
+# Hostname and port of guacamole proxy
+guacd-hostname: {{ GUACD_HOSTNAME }}
+guacd-port:     {{ GUACD_PORT }}
+
+# Location to read extra .jar's from
+lib-directory:  /var/lib/{{ TOMCAT_VERSION }}/webapps/guacamole-0.9.9/WEB-INF/classes
+
+# Authentication provider class
+auth-provider: net.sourceforge.guacamole.net.basic.BasicFileAuthenticationProvider
+
+# Properties used by BasicFileAuthenticationProvider
+basic-user-mapping: /etc/guacamole/user-mapping.xml
