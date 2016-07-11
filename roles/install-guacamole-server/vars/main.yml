@@ -11,3 +11,5 @@ PASSWORD: password
 GUACAMOLE_HOME: /var/lib/{{ TOMCAT_VERSION }}/.guacamole
 
 GUACAMOLE_VERSION: guacamole-server-0.9.9
+
+GUACAMOLE_WAR: guacamole-0.9.9

@@ -19,10 +19,11 @@
 
 ### Install the guacamole-client
 
-- name: Get gaucamole.war
+- name: Download gaucamole.war
   get_url: 
-    url: "http://sourceforge.net/projects/guacamole/files/current/binary/{{ GUACAMOLE_VERSION }}.war"
+    url: "http://sourceforge.net/projects/guacamole/files/current/binary/{{ GUACAMOLE_WAR }}.war"
     dest: "/var/lib/{{ TOMCAT_VERSION }}/webapps/guacamole.war"
+    timeout: 30
     force: yes
   tags: download
 

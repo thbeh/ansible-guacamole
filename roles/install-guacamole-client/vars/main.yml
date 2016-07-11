@@ -1,6 +1,6 @@
 ---
 
-GUACD_HOSTNAME: localhost
+GUACD_HOSTNAME: <not localhost>
 
 GUACD_PORT: 4822
 
@@ -11,3 +11,5 @@ PASSWORD: password
 GUACAMOLE_HOME: /var/lib/{{ TOMCAT_VERSION }}/.guacamole
 
 GUACAMOLE_VERSION: guacamole-client-0.9.9
+
+GUACAMOLE_WAR: guacamole-0.9.9
