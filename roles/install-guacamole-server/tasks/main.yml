@@ -19,7 +19,7 @@
 
 ### Install guacamole-server
 
-- name: Downlaod the guacamole-server source
+- name: Download the guacamole-server source
   get_url: url="http://sourceforge.net/projects/guacamole/files/current/source/{{ GUACAMOLE_VERSION }}.tar.gz" dest="/tmp/"
   tags: download
 
@@ -41,6 +41,7 @@
 
 - name: Build guacamole-server from source (ldconfig)
   command: ldconfig
+  tags: build, install
 
 - name: Get gaucamole.war
   get_url: url="http://sourceforge.net/projects/guacamole/files/current/binary/guacamole-0.9.9.war" dest="/var/lib/{{ TOMCAT_VERSION }}/webapps/guacamole.war" force=yes
