@@ -1,0 +1,47 @@
+---
+
+### Install dependencies
+
+- name: Gather OS-specific variables
+  include_vars: "{{ ansible_distribution }}.yml"
+  tags: vars
+
+- name: Install epel-release for CentOS
+  yum: name=epel-release state=latest update_cache=yes
+  when: ansible_distribution == "CentOS"
+  tags: install
+
+- name: Install dependencies for guacamole
+  action: >
+    {{ ansible_pkg_mgr }} name={{ item }} state=latest
+  with_items: '{{ PACKAGES }}'
+  tags: install
+
+### Install the guacamole-client
+
+- name: Get gaucamole.war
+  get_url: 
+    url: "http://sourceforge.net/projects/guacamole/files/current/binary/{{ GUACAMOLE_VERSION }}.war"
+    dest: "/var/lib/{{ TOMCAT_VERSION }}/webapps/guacamole.war"
+    force: yes
+  tags: download
+
+- name: Make '{{ GUACAMOLE_HOME }}' directory
+  file: path='{{ GUACAMOLE_HOME }}' state=directory
+  tags: configuration
+
+- name: Add guacamole.properties to "{{ GUACAMOLE_HOME }}"
+  template: src="guacamole.properties.j2" dest="{{ GUACAMOLE_HOME }}/guacamole.properties"
+  tags: template
+
+- name: Add user-mapping.xml to "{{ GUACAMOLE_HOME }}"
+  template: src="user-mapping.xml.j2" dest="{{ GUACAMOLE_HOME }}/user-mapping.xml"
+  tags: template
+
+- name: restart tomcat
+  service: name={{ TOMCAT_VERSION }} state=restarted
+  tags: restart
+
+- name: restart guacd
+  service: name=guacd state=restarted
+  tags: restart
