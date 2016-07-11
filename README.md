@@ -1,12 +1,12 @@
 # ansible-guacamole
 
-#####Current guacamole version:
+####Current guacamole version:
 0.9.9
 
-#####Current tomcat version:
+####Current tomcat version:
 tomcat6 (Ubuntu), tomcat (CentOS)
 
-### ISSUES:
+## ISSUES:
 ----------------
 - Need to find a way to configure clients and servers with shared credentials/connections
 - The login page shows up but does not accept the credentials "user":"password"
