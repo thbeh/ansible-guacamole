@@ -1,5 +1,7 @@
 ---
 
+### Install dependencies
+
 - name: Gather OS-specific variables
   include_vars: "{{ ansible_distribution }}.yml"
   tags: vars
@@ -15,9 +17,7 @@
   with_items: '{{ PACKAGES }}'
   tags: install
 
-- name: Gather OS-specific variables
-  include_vars: "{{ ansible_distribution }}.yml"
-  tags: vars
+### Install guacamole-server
 
 - name: Downlaod the guacamole-server source
   get_url: url="http://sourceforge.net/projects/guacamole/files/current/source/guacamole-server-0.9.9.tar.gz" dest="/etc/"
@@ -62,15 +62,13 @@
   file: path=/etc/guacamole-server-0.9.9 state=absent
   tags: clear-files
 
-- name: Gather OS-specific variables
-  include_vars: "{{ ansible_distribution }}.yml"
-  tags: vars
+### Configure guacamole-server
 
 - name: Make '{{ GUACAMOLE_HOME }}' directory
   file: path='{{ GUACAMOLE_HOME }}' state=directory
   tags: configuration
 
-- name: Add guacamole.properties to "{{GUACAMOLE_HOME}}"
+- name: Add guacamole.properties to "{{ GUACAMOLE_HOME }}"
   template: src="guacamole.properties.j2" dest="{{ GUACAMOLE_HOME }}/guacamole.properties"
   tags: template
 

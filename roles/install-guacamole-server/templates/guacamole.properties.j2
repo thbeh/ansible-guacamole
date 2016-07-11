@@ -9,4 +9,4 @@ lib-directory:  /var/lib/{{ TOMCAT_VERSION }}/webapps/guacamole-0.9.9/WEB-INF/cl
 auth-provider: net.sourceforge.guacamole.net.basic.BasicFileAuthenticationProvider
 
 # Properties used by BasicFileAuthenticationProvider
-basic-user-mapping: /etc/guacamole/user-mapping.xml
+basic-user-mapping: {{ GUACAMOLE_HOME }}/user-mapping.xml
