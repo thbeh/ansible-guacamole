@@ -26,8 +26,5 @@ We will use the third option, with the configuration directory `/usr/share/tomca
 ## Use
 
 1. Use the command `tightvncpasswd` to set new password that matches that in user-mapping.xml
-2. 
 
-- tightvncserver password stuff `- /bin/su {{ ATMOUSERNAME }} -c "/usr/bin/printf '%s\n%s\n' 'display' 'display' | vncpasswd {{ NOVNC.passwd_file }}"`
-- maybe LDAP
-- 
+Currently the only user is root. I need to add `become_user:` make VNC sign in as other users

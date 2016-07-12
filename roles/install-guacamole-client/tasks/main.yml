@@ -35,7 +35,14 @@
   template: src="guacamole.properties.j2" dest="{{ GUACAMOLE_HOME }}/guacamole.properties"
   tags: template
 
+- name: Configure VNC password
+  command: /bin/su root -c "/usr/bin/printf '%s\n%s\n' 'password' 'password' | tightvncpasswd"
+  tags: vnc
+
+- name: start tightvncserver
+  command: tightvncserver
+  tags: vnc
+
 - name: restart tomcat
   service: name={{ TOMCAT_VERSION }} state=restarted
   tags: restart
-  
