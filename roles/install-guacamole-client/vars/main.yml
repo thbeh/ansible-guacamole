@@ -1,7 +1,7 @@
 ---
 
 # Hostname or IP of the server
-GUACD_HOSTNAME: 
+GUACD_HOSTNAME: mclean.iplantcollaborative.org
 
 GUACD_PORT: 4822
 
