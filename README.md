@@ -2,7 +2,7 @@
 
 Current guacamole version: 0.9.9
 
-Current tomcat version: tomcat6 (Ubuntu), tomcat (CentOS)
+Current tomcat version: tomcat7 (Ubuntu), tomcat (CentOS)
 
 ## ISSUES:
 
@@ -19,7 +19,7 @@ Current tomcat version: tomcat6 (Ubuntu), tomcat (CentOS)
 >	- The directory specified within the environment variable GUACAMOLE_HOME.
 >	- The directory .guacamole, located within the home directory of the user running the servlet container.
 
-We will use the third option, with the configuration directory `/usr/share/tomcat6/.guacamole`
+We will use the third option, with the configuration directory `/usr/share/tomcat7/.guacamole`
 
 ----------------------------------------------------------------------------------
 
