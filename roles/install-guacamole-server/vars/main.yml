@@ -13,3 +13,25 @@ GUACAMOLE_HOME: /usr/share/{{ TOMCAT_VERSION }}/.guacamole
 GUACAMOLE_VERSION: guacamole-server-0.9.9
 
 GUACAMOLE_WAR: guacamole-0.9.9
+
+CLIENTS:
+  Box1: 
+    hostname: 129.114.5.4
+    port: 5901
+    pass: 
+  Box2: 
+    hostname: 129.114.5.33
+    port: 5901
+    pass: 
+  Box3: 
+    hostname: 129.114.5.34
+    port: 5901
+    pass: 
+  Box4: 
+    hostname: 129.114.5.36
+    port: 5901
+    pass: 
+  Box5: 
+    hostname: 129.114.5.37
+    port: 5901
+    pass: 

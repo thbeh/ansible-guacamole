@@ -84,6 +84,22 @@
   template: src="user-mapping.xml.j2" dest="{{ GUACAMOLE_HOME }}/user-mapping.xml"
   tags: template
 
+- name: Add connection information for each client
+  blockinfile:
+    block: >
+      <connection name="{{ item.key }}">
+         <protocol>vnc</protocol>
+         <param name="hostname">{{ item.value.hostname }}</param>
+         <param name="port">{{ item.value.port }}</param>
+         <param name="password">{{ item.value.pass }}</param>
+      </connection>
+    dest: "{{ GUACAMOLE_HOME }}/user-mapping.xml"
+    state: present
+    insertafter: "^\t<!-- Comment so blockinfile can find a good place -->"
+    backup: yes
+  with_items: "{{ CLIENTS }}"
+  tags: configuration, template
+
 - name: restart tomcat
   service: name={{ TOMCAT_VERSION }} state=restarted
   tags: restart
