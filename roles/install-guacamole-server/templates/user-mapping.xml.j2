@@ -1,12 +1,21 @@
 <user-mapping>
    <authorize username="{{ USERNAME }}" password="{{ PASSWORD }}">
+<!-- I have localhost VNC disabled by default
       <connection name="localhost">
          <protocol>vnc</protocol>
          <param name="hostname">localhost</param>
          <param name="port">5901</param>
          <param name="password">password</param>
+      </connection> -->
+
+{% for item in CLIENTS %}
+      <connection name="{{ CLIENTS[item].name }}">
+         <protocol>vnc</protocol>
+         <param name="hostname">{{ CLIENTS[item].hostname }}</param>
+         <param name="port">{{ CLIENTS[item].port }}</param>
+         <param name="password">{{ CLIENTS[item].pass }}</param>
       </connection>
-   <!-- Comment so blockinfile can find a good place -->
+{% endfor %}
 
    <!--This is how additional users can be added
    <authorize username="USERNAME" password="PASSWORD">

@@ -6,6 +6,10 @@
   include_vars: "{{ ansible_distribution }}.yml"
   tags: vars
 
+- name: Add Oracle Java repository
+  apt_repository: repo="ppa:webupd8team/java"
+  when: ansible_distribution == "Ubuntu"
+
 - name: Install epel-release for CentOS
   yum: name=epel-release state=latest update_cache=yes
   when: ansible_distribution == "CentOS"
@@ -54,14 +58,6 @@
     force: yes
   tags: download
 
-- name: restart tomcat
-  service: name={{ TOMCAT_VERSION }} state=restarted
-  tags: restart
-
-- name: restart guacd
-  service: name=guacd state=restarted
-  tags: restart
-
 - name: delete {{ GUACAMOLE_VERSION }}.tar.gz
   file: path=/tmp/{{ GUACAMOLE_VERSION }}.tar.gz state=absent
   tags: clear-files
@@ -81,24 +77,25 @@
   tags: template
 
 - name: Add user-mapping.xml to "{{ GUACAMOLE_HOME }}"
-  template: src="user-mapping.xml.j2" dest="{{ GUACAMOLE_HOME }}/user-mapping.xml"
-  tags: template
+  template: src="user-mapping.xml.j2" dest="{{ GUACAMOLE_HOME }}/user-mapping.xml" backup=yes
+  tags: template, user-mapping
 
-- name: Add connection information for each client
-  blockinfile:
-    block: >
-      <connection name="{{ item.key }}">
-         <protocol>vnc</protocol>
-         <param name="hostname">{{ item.value.hostname }}</param>
-         <param name="port">{{ item.value.port }}</param>
-         <param name="password">{{ item.value.pass }}</param>
-      </connection>
-    dest: "{{ GUACAMOLE_HOME }}/user-mapping.xml"
-    state: present
-    insertafter: "^\t<!-- Comment so blockinfile can find a good place -->"
-    backup: yes
-  with_items: "{{ CLIENTS }}"
-  tags: configuration, template
+# - name: Add connection information for each client
+#   blockinfile:
+#     block: >
+#             <connection name="{{ item.key }}">
+#                <protocol>vnc</protocol>
+#                <param name="hostname">{{ item.value.hostname }}</param>
+#                <param name="port">{{ item.value.port }}</param>
+#                <param name="password">{{ item.value.pass }}</param>
+#             </connection>
+#     dest: "{{ GUACAMOLE_HOME }}/user-mapping.xml"
+#     state: present
+#     insertafter: "<!-- Comment so blockinfile can find a good place -->"
+#     marker: "<!--{mark} Ansible managed block -->"
+#     backup: yes
+#   with_dict: "{{ CLIENTS }}"
+#   tags: configuration, template
 
 - name: restart tomcat
   service: name={{ TOMCAT_VERSION }} state=restarted

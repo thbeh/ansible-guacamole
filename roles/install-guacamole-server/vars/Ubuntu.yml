@@ -12,6 +12,9 @@ PACKAGES:
   - "{{ TOMCAT_VERSION }}"
   - "{{ TOMCAT_VERSION }}-common"
   - libtomcat7-java
+  - software-properties-common
+  - oracle-java8-installer
+  - oracle-java8-set-default
   - default-jdk
   - guacd
   # Optionals:
@@ -24,3 +27,4 @@ PACKAGES:
   - libssl-dev
   - libvorbis-dev
   - libwebp-dev
+
