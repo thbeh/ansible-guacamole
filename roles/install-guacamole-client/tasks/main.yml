@@ -38,7 +38,4 @@
 - name: restart tomcat
   service: name={{ TOMCAT_VERSION }} state=restarted
   tags: restart
-
-- name: start tightvncserver
-  command: tightvncserver
-  tags: tightvnc
+  

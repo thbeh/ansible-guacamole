@@ -16,27 +16,27 @@ GUACAMOLE_WAR: guacamole-0.9.9
 
 CLIENTS:
   Box1:
-    name: box1
-    hostname: 129.114.5.4
+    name: Box1
+    hostname: 0.0.0.0
     port: 5901
-    pass: 
+    pass: password
   Box2: 
-    name: box2
-    hostname: 129.114.5.33
+    name: Box2
+    hostname: 0.0.0.0
     port: 5901
-    pass: 
+    pass: password
   Box3: 
-    name: box3
-    hostname: 129.114.5.34
+    name: Box3
+    hostname: 0.0.0.0
     port: 5901
-    pass: 
+    pass: password
   Box4: 
-    name: box4
-    hostname: 129.114.5.36
+    name: Box4
+    hostname: 0.0.0.0
     port: 5901
-    pass: 
+    pass: password
   Box5: 
-    name: box5
-    hostname: 129.114.5.37
+    name: Box5
+    hostname: 0.0.0.0
     port: 5901
-    pass: 
+    pass: password

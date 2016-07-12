@@ -22,7 +22,7 @@
 - name: Download the guacamole-server source
   get_url: 
     url: "http://sourceforge.net/projects/guacamole/files/current/source/{{ GUACAMOLE_VERSION }}.tar.gz"
-    dest: "/tmp/"
+    dest: "/tmp/{{ GUACAMOLE_VERSION }}.tar.gz"
     timeout: 30
   tags: download
 
