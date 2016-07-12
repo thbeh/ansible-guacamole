@@ -1,6 +1,6 @@
 ---
 
-TOMCAT_VERSION: tomcat6
+TOMCAT_VERSION: tomcat7
 
 PACKAGES:
   - libcairo2-dev
@@ -9,7 +9,9 @@ PACKAGES:
   - libjpeg-turbo8-dev
   - libpng12-dev
   - libossp-uuid-dev
-  - tomcat6
+  - "{{ TOMCAT_VERSION }}"
+  - "{{ TOMCAT_VERSION }}-common"
+  - libtomcat7-java
   - default-jdk
   - guacd
   # Optionals:

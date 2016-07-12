@@ -4,5 +4,8 @@ TOMCAT_VERSION: tomcat6
 
 PACKAGES:
   - "{{ TOMCAT_VERSION }}"
+  - "{{ TOMCAT_VERSION }}-common"
+  - libtomcat7-java
   - default-jdk
   - maven
+  - tightvncserver
