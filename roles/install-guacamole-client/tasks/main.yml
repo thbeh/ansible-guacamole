@@ -1,7 +1,5 @@
 ---
 
-### Install dependencies
-
 - name: Gather OS-specific variables
   include_vars: "{{ ansible_distribution }}.yml"
   tags: vars
@@ -21,8 +19,6 @@
   with_items: '{{ PACKAGES }}'
   tags: install
 
-### Install the guacamole-client
-
 - name: Download gaucamole.war
   get_url: 
     url: "http://sourceforge.net/projects/guacamole/files/current/binary/{{ GUACAMOLE_WAR }}.war"
@@ -39,14 +35,10 @@
   template: src="guacamole.properties.j2" dest="{{ GUACAMOLE_HOME }}/guacamole.properties"
   tags: template
 
-# - name: Add user-mapping.xml to "{{ GUACAMOLE_HOME }}"
-#   template: src="user-mapping.xml.j2" dest="{{ GUACAMOLE_HOME }}/user-mapping.xml"
-#   tags: template
-
 - name: restart tomcat
   service: name={{ TOMCAT_VERSION }} state=restarted
   tags: restart
 
-# - name: restart guacd
-#   service: name=guacd state=restarted
-#   tags: restart
+- name: start tightvncserver
+  command: tightvncserver
+  tags: tightvnc
