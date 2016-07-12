@@ -6,6 +6,10 @@
   include_vars: "{{ ansible_distribution }}.yml"
   tags: vars
 
+- name: Add Oracle Java repository
+  apt_repository: repo="ppa:webupd8team/java"
+  when: ansible_distribution == "Ubuntu"
+
 - name: Install epel-release for CentOS
   yum: name=epel-release state=latest update_cache=yes
   when: ansible_distribution == "CentOS"
@@ -43,6 +47,6 @@
   service: name={{ TOMCAT_VERSION }} state=restarted
   tags: restart
 
-- name: restart guacd
-  service: name=guacd state=restarted
-  tags: restart
+# - name: restart guacd
+#   service: name=guacd state=restarted
+#   tags: restart

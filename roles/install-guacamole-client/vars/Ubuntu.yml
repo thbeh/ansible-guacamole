@@ -1,11 +1,14 @@
 ---
 
-TOMCAT_VERSION: tomcat6
+TOMCAT_VERSION: tomcat7
 
 PACKAGES:
   - "{{ TOMCAT_VERSION }}"
   - "{{ TOMCAT_VERSION }}-common"
   - libtomcat7-java
   - default-jdk
+  - software-properties-common
+  - oracle-java8-installer
+  - oracle-java8-set-default
   - maven
   - tightvncserver

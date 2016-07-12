@@ -15,23 +15,28 @@ GUACAMOLE_VERSION: guacamole-server-0.9.9
 GUACAMOLE_WAR: guacamole-0.9.9
 
 CLIENTS:
-  Box1: 
+  Box1:
+    name: box1
     hostname: 129.114.5.4
     port: 5901
     pass: 
   Box2: 
+    name: box2
     hostname: 129.114.5.33
     port: 5901
     pass: 
   Box3: 
+    name: box3
     hostname: 129.114.5.34
     port: 5901
     pass: 
   Box4: 
+    name: box4
     hostname: 129.114.5.36
     port: 5901
     pass: 
   Box5: 
+    name: box5
     hostname: 129.114.5.37
     port: 5901
     pass: 

@@ -39,3 +39,5 @@ We will use the third option, with the configuration directory `/usr/share/tomca
   ```
 
 2. On client machines, change guacd-hostname in `guacamole.properties` to match the address of your server
+3. Use the command `tightvncpasswd` to set new password that matches that in user-mapping.xml
+4. 
