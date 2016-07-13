@@ -19,20 +19,12 @@
   with_items: '{{ PACKAGES }}'
   tags: install
 
-- name: Download gaucamole.war
-  get_url: 
-    url: "http://sourceforge.net/projects/guacamole/files/current/binary/{{ GUACAMOLE_WAR }}.war"
-    dest: "/var/lib/{{ TOMCAT_VERSION }}/webapps/guacamole.war"
-    timeout: 30
-    force: yes
-  tags: download
-
-- name: Make '{{ GUACAMOLE_HOME }}' directory
-  file: path='{{ GUACAMOLE_HOME }}' state=directory
+- name: Make '{{ GUACAMOLE_HOME_CLIENT }}' directory
+  file: path='{{ GUACAMOLE_HOME_CLIENT }}' state=directory
   tags: configuration
 
-- name: Add guacamole.properties to "{{ GUACAMOLE_HOME }}"
-  template: src="guacamole.properties.j2" dest="{{ GUACAMOLE_HOME }}/guacamole.properties"
+- name: Add guacamole.properties to "{{ GUACAMOLE_HOME_CLIENT }}"
+  template: src="guacamole.properties.j2" dest="{{ GUACAMOLE_HOME_CLIENT }}/guacamole.properties"
   tags: template
 
 - name: kill all running vncserver sessions
@@ -47,7 +39,7 @@
     - 7
     - 8
   failed_when: False
-  tags: kill-vnc
+  tags: vnc
 
 - name: Configure VNC password
   shell: /bin/su {{ VNC_USER }} -c "/usr/bin/printf '%s\n%s\n' '{{ VNC_PASS }}' '{{ VNC_PASS }}' | tightvncpasswd"
@@ -57,6 +49,6 @@
   shell: /bin/su {{ VNC_USER }} -c tightvncserver
   tags: vnc
 
-- name: restart tomcat
-  service: name={{ TOMCAT_VERSION }} state=restarted
+- name: restart guacd
+  service: name=guacd state=restarted
   tags: restart

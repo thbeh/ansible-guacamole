@@ -4,9 +4,9 @@ GUACD_HOSTNAME: localhost
 
 GUACD_PORT: 4822
 
-USERNAME: user
+GUACD_USERNAME: user
 
-PASSWORD: password
+GUACD_PASSWORD: password
 
 GUACAMOLE_HOME: /usr/share/{{ TOMCAT_VERSION }}/.guacamole
 
