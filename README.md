@@ -12,10 +12,7 @@ Current tomcat version: tomcat7 (Ubuntu), tomcat (CentOS)
 4. CentOS guacamole-client doesn't work, CentOS guacamole-server is untested
 
 ----------------------------------------------------------------------------------
-
-- Need to find a way to configure clients and servers with shared credentials/connections (LDAP probably)
-- I need to add tightvnc setup to Ansible bc I am doing that manually right now.
-- When there are connection issues, first go to the client and close al VNC and run `tightvncserver` again
+## GUACAMOLE_HOME
 
 [From "Configuring Guacamole":](http://guacamole.incubator.apache.org/doc/gug/configuring-guacamole.html)
 > Guacamole reads files from its own configuration directory by default, resorting to the classpath only when this directory cannot be found. When locating this directory, Guacamole will try, in order:
@@ -27,4 +24,11 @@ Current tomcat version: tomcat7 (Ubuntu), tomcat (CentOS)
 We will use the third option, with the configuration directory `/usr/share/tomcat7/.guacamole`
 
 ----------------------------------------------------------------------------------
+## How To
 
+1. Replace all < > wrapped variables with desired values
+2. Fill out hosts file with correct information
+3. Run guacamole_server_pb.yml on the server machine
+4. Run guacamole_client_pb.yml on all client machines
+5. Visit `your-hostname:8080/guacamole` and login
+6. Use `Atl+Shift+Ctrl` to view the guacamole menu

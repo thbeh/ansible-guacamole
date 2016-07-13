@@ -1,14 +1,17 @@
 ---
 
-#Server
+# Server
 
-GUACD_HOSTNAME: localhost
+# Hostname or IP of the server (same name used to navigate to the web UI)
+GUACD_HOSTNAME: <hostname>
 
 GUACD_PORT: 4822
 
-GUACD_USERNAME: user
+# Username used to login to guacamole web interface (different from VNC_USER)
+GUACD_USERNAME: <user>
 
-GUACD_PASSWORD: password
+# Password used to login to guacamole web interface (different from VNC_USER)
+GUACD_PASSWORD: <password>
 
 GUACAMOLE_HOME: /usr/share/{{ TOMCAT_VERSION }}/.guacamole
 
@@ -16,6 +19,7 @@ GUACAMOLE_VERSION: guacamole-server-0.9.9
 
 GUACAMOLE_WAR: guacamole-0.9.9
 
+# Reconfigure all variables in this dict to fit your needs
 CLIENTS:
   Box1:
     name: Box1
@@ -48,10 +52,12 @@ CLIENTS:
     pass: password
     protocol: vnc
 
-#Client
+# Client
 
 GUACAMOLE_HOME_CLIENT: /etc/guacamole
 
-VNC_USER: username
+# Password set on your VNC server (tightvncserver, vncserver)
+VNC_USER: <username>
 
-VNC_PASS: password
+# Password set on your VNC server (tightvncserver, vncserver)
+VNC_PASS: <password>
