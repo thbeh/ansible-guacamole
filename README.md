@@ -4,7 +4,7 @@ Current guacamole version: 0.9.9
 
 Current tomcat version: tomcat7 (Ubuntu), tomcat (CentOS)
 
-## ISSUES:
+## issues
 
 1. Does not yet work with CentOS
 2. Need to add `with_first_found` for finding variables to use different versions of Ubuntu and CentOS
@@ -23,8 +23,10 @@ Current tomcat version: tomcat7 (Ubuntu), tomcat (CentOS)
 
 We will use the third option, with the configuration directory `/usr/share/tomcat7/.guacamole`
 
+You can easily change this with the {{GUACAMOLE_HOME}} variable
+
 ----------------------------------------------------------------------------------
-## How To
+## how to
 
 1. Replace all < > wrapped variables with desired values
 2. Fill out hosts file with correct information
