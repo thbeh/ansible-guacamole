@@ -30,7 +30,7 @@ You can easily change this with the `{{GUACAMOLE_HOME}}` variable
 
 1. Replace all < > wrapped variables with desired values
 2. Fill out hosts file with correct information
-3. Run guacamole_server_pb.yml on the server machine
-4. Run guacamole_client_pb.yml on all client machines
+3. Run `guacamole_server_pb.yml` on the server machine
+4. Run `guacamole_client_pb.yml` on all client machines
 5. Visit `your-hostname:8080/guacamole` and login
 6. Use `Atl+Shift+Ctrl` to view the guacamole menu
