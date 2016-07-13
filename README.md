@@ -23,7 +23,7 @@ Current tomcat version: tomcat7 (Ubuntu), tomcat (CentOS)
 
 We will use the third option, with the configuration directory `/usr/share/tomcat7/.guacamole`
 
-You can easily change this with the {{GUACAMOLE_HOME}} variable
+You can easily change this with the `{{GUACAMOLE_HOME}}` variable
 
 ----------------------------------------------------------------------------------
 ## how to
