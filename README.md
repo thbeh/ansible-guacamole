@@ -6,6 +6,10 @@ Current tomcat version: tomcat7 (Ubuntu), tomcat (CentOS)
 
 ## ISSUES:
 
+1. Does not yet work with CentOS
+2. Need to add `with_first_found` for finding variables to use different versions of Ubuntu and CentOS
+3. 
+
 ----------------------------------------------------------------------------------
 
 - Need to find a way to configure clients and servers with shared credentials/connections (LDAP probably)
@@ -23,8 +27,3 @@ We will use the third option, with the configuration directory `/usr/share/tomca
 
 ----------------------------------------------------------------------------------
 
-## Use
-
-1. Use the command `tightvncpasswd` to set new password that matches that in user-mapping.xml
-
-Currently the only user is root. I need to add `become_user:` make VNC sign in as other users

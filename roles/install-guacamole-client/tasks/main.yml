@@ -35,12 +35,26 @@
   template: src="guacamole.properties.j2" dest="{{ GUACAMOLE_HOME }}/guacamole.properties"
   tags: template
 
+- name: kill all running vncserver sessions
+  shell: /bin/su {{ VNC_USER }} -c "/usr/bin/vncserver -kill :'{{ item }}'"
+  with_items:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+  failed_when: False
+  tags: kill-vnc
+
 - name: Configure VNC password
-  command: /bin/su root -c "/usr/bin/printf '%s\n%s\n' 'password' 'password' | tightvncpasswd"
+  shell: /bin/su {{ VNC_USER }} -c "/usr/bin/printf '%s\n%s\n' '{{ VNC_PASS }}' '{{ VNC_PASS }}' | tightvncpasswd"
   tags: vnc
 
 - name: start tightvncserver
-  command: tightvncserver
+  shell: /bin/su {{ VNC_USER }} -c tightvncserver
   tags: vnc
 
 - name: restart tomcat

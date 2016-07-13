@@ -10,10 +10,12 @@
 
 {% for item in CLIENTS %}
       <connection name="{{ CLIENTS[item].name }}">
-         <protocol>vnc</protocol>
+         <protocol>{{ CLIENTS[item].protocol }}</protocol>
          <param name="hostname">{{ CLIENTS[item].hostname }}</param>
          <param name="port">{{ CLIENTS[item].port }}</param>
-         <param name="password">{{ CLIENTS[item].pass }}</param>
+{% if CLIENTS[item].conn_pass %}
+         <param name="password">{{ CLIENTS[item].pass | default(omit) }}</param>
+{% endif %}
       </connection>
 {% endfor %}
 

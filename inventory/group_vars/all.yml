@@ -14,6 +14,10 @@ GUACAMOLE_VERSION: guacamole-server-0.9.9
 
 GUACAMOLE_WAR: guacamole-0.9.9
 
+VNC_USER: username
+
+VNC_PASS: password
+
 CLIENTS:
   Box1:
     name: Box1

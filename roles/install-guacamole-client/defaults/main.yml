@@ -14,3 +14,7 @@ GUACAMOLE_HOME: /usr/share/{{ TOMCAT_VERSION }}/.guacamole
 GUACAMOLE_VERSION: guacamole-client-0.9.9
 
 GUACAMOLE_WAR: guacamole-0.9.9
+
+VNC_USER: username
+
+VNC_PASS: password

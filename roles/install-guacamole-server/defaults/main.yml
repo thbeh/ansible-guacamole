@@ -20,23 +20,28 @@ CLIENTS:
     hostname: 0.0.0.0
     port: 5901
     pass: password
+    protocol: vnc
   Box2: 
     name: Box2
     hostname: 0.0.0.0
     port: 5901
     pass: password
+    protocol: vnc
   Box3: 
     name: Box3
     hostname: 0.0.0.0
     port: 5901
     pass: password
+    protocol: vnc
   Box4: 
     name: Box4
     hostname: 0.0.0.0
     port: 5901
     pass: password
+    protocol: vnc
   Box5: 
     name: Box5
     hostname: 0.0.0.0
     port: 5901
     pass: password
+    protocol: vnc
