@@ -1,5 +1,7 @@
 ---
 
+TOMCAT_VERSION: tomcat7
+
 PACKAGES:
   - default-jdk
   - software-properties-common
@@ -8,3 +10,7 @@ PACKAGES:
   - maven
   - tightvncserver
   - guacd
+
+VNC_COMMAND: tightvncserver
+
+VNC_PASS_COMMAND: tightvncpasswd

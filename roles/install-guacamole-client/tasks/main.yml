@@ -28,7 +28,7 @@
   tags: template
 
 - name: kill all running vncserver sessions
-  shell: /bin/su {{ VNC_USER }} -c "/usr/bin/vncserver -kill :'{{ item }}'"
+  shell: /bin/su {{ VNC_USER }} -c "/usr/bin/{{ VNC_COMMAND }} -kill :'{{ item }}'"
   with_items:
     - 1
     - 2
@@ -42,11 +42,11 @@
   tags: vnc
 
 - name: Configure VNC password
-  shell: /bin/su {{ VNC_USER }} -c "/usr/bin/printf '%s\n%s\n' '{{ VNC_PASS }}' '{{ VNC_PASS }}' | tightvncpasswd"
+  shell: /bin/su {{ VNC_USER }} -c "/usr/bin/printf '%s\n%s\n' '{{ VNC_PASS }}' '{{ VNC_PASS }}' | {{ VNC_PASS_COMMAND }}"
   tags: vnc
 
-- name: start tightvncserver
-  shell: /bin/su {{ VNC_USER }} -c tightvncserver
+- name: start vncserver
+  shell: /bin/su {{ VNC_USER }} -c {{ VNC_COMMAND }}
   tags: vnc
 
 - name: restart guacd

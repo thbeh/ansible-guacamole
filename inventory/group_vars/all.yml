@@ -1,5 +1,7 @@
 ---
 
+#Server
+
 GUACD_HOSTNAME: localhost
 
 GUACD_PORT: 4822
@@ -46,16 +48,9 @@ CLIENTS:
     pass: password
     protocol: vnc
 
-# Hostname or IP of the server
-GUACD_HOSTNAME: hostname
-
-GUACD_PORT: 4822
+#Client
 
 GUACAMOLE_HOME_CLIENT: /etc/guacamole
-
-GUACAMOLE_VERSION: guacamole-client-0.9.9
-
-GUACAMOLE_WAR: guacamole-0.9.9
 
 VNC_USER: username
 

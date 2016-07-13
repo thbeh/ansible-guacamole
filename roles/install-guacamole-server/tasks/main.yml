@@ -19,12 +19,9 @@
   with_items: '{{ PACKAGES }}'
   tags: install
 
-- name: Download the guacamole-server source
-  get_url: 
-    url: "http://sourceforge.net/projects/guacamole/files/current/source/{{ GUACAMOLE_VERSION }}.tar.gz"
-    dest: "/tmp/{{ GUACAMOLE_VERSION }}.tar.gz"
-    timeout: 30
-  tags: download
+- name: Copy over guacamole-server source
+  copy: src="files/{{ GUACAMOLE_VERSION }}.tar.gz" dest=/tmp/
+  tags: file
 
 - name: Extract the guacamole-server source
   unarchive: src="/tmp/{{ GUACAMOLE_VERSION }}.tar.gz" copy=no dest="/tmp/"
@@ -46,13 +43,9 @@
   command: ldconfig
   tags: build, install
 
-- name: Download gaucamole.war
-  get_url: 
-    url: "http://sourceforge.net/projects/guacamole/files/current/binary/{{ GUACAMOLE_WAR }}.war"
-    dest: "/var/lib/{{ TOMCAT_VERSION }}/webapps/guacamole.war"
-    timeout: 30
-    force: yes
-  tags: download
+- name: Copy over {{ GUACAMOLE_WAR }}.war
+  copy: src="files/{{ GUACAMOLE_WAR }}.war" dest=/var/lib/{{ TOMCAT_VERSION }}/webapps/guacamole.war
+  tags: file
 
 - name: delete {{ GUACAMOLE_VERSION }}.tar.gz
   file: path=/tmp/{{ GUACAMOLE_VERSION }}.tar.gz state=absent
