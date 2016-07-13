@@ -4,9 +4,9 @@ GUACD_HOSTNAME: localhost
 
 GUACD_PORT: 4822
 
-USERNAME: user
+GUACD_USERNAME: user
 
-PASSWORD: password
+GUACD_PASSWORD: password
 
 GUACAMOLE_HOME: /usr/share/{{ TOMCAT_VERSION }}/.guacamole
 
@@ -14,48 +14,49 @@ GUACAMOLE_VERSION: guacamole-server-0.9.9
 
 GUACAMOLE_WAR: guacamole-0.9.9
 
-VNC_USER: username
-
-VNC_PASS: password
-
 CLIENTS:
   Box1:
     name: Box1
     hostname: 0.0.0.0
     port: 5901
     pass: password
+    protocol: vnc
   Box2: 
     name: Box2
     hostname: 0.0.0.0
     port: 5901
     pass: password
+    protocol: vnc
   Box3: 
     name: Box3
     hostname: 0.0.0.0
     port: 5901
     pass: password
+    protocol: vnc
   Box4: 
     name: Box4
     hostname: 0.0.0.0
     port: 5901
     pass: password
+    protocol: vnc
   Box5: 
     name: Box5
     hostname: 0.0.0.0
     port: 5901
     pass: password
+    protocol: vnc
 
 # Hostname or IP of the server
 GUACD_HOSTNAME: hostname
 
 GUACD_PORT: 4822
 
-USERNAME: user
-
-PASSWORD: password
-
-GUACAMOLE_HOME: /usr/share/{{ TOMCAT_VERSION }}/.guacamole
+GUACAMOLE_HOME_CLIENT: /etc/guacamole
 
 GUACAMOLE_VERSION: guacamole-client-0.9.9
 
 GUACAMOLE_WAR: guacamole-0.9.9
+
+VNC_USER: username
+
+VNC_PASS: password
