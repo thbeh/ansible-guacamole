@@ -28,8 +28,22 @@ You can easily change this with the `{{GUACAMOLE_HOME}}` variable
 ----------------------------------------------------------------------------------
 ## how to
 
-1. Replace all < > wrapped variables with desired values
-2. Fill out hosts file with correct information
+#####verify files
+
+```
+calvinmclean$ openssl md5 guacamole-0.9.9.war 
+MD5(guacamole-0.9.9.war)= 324c17aa305a077a2127378a2d0a7a51
+
+calvinmclean$ openssl md5 guacamole-server-0.9.9.tar.gz 
+MD5(guacamole-server-0.9.9.tar.gz)= cce818bfcba35fe0456b45d988118893
+```
+
+Run the commands above to verify the md5 checksum. If the result is the same as mine, the files are valid.
+
+#####run the ansible
+
+1. Replace all `< >` wrapped variables with desired values
+2. Fill out `hosts` file with correct information
 3. Run `guacamole_server_pb.yml` on the server machine
 4. Run `guacamole_client_pb.yml` on all client machines
 5. Visit `your-hostname:8080/guacamole` and login
