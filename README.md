@@ -28,7 +28,7 @@ You can easily change this with the `{{GUACAMOLE_HOME}}` variable
 ----------------------------------------------------------------------------------
 ## how to
 
-#####verify files
+####verify files
 
 ```
 calvinmclean$ openssl md5 guacamole-0.9.9.war 
@@ -40,7 +40,7 @@ MD5(guacamole-server-0.9.9.tar.gz)= cce818bfcba35fe0456b45d988118893
 
 Run the commands above to verify the md5 checksum. If the result is the same as mine, the files are valid.
 
-#####run the ansible
+####run the ansible
 
 1. Replace all `< >` wrapped variables with desired values
 2. Fill out `hosts` file with correct information
