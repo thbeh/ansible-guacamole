@@ -3,8 +3,7 @@
 TOMCAT_VERSION: tomcat
 
 PACKAGES:
-  - java-1.8.0-openjdk.x86_64
-  - tigervnc-server
+  - tigervnc-server.x86_64
   - guacd
 
 VNC_COMMAND: vncserver

@@ -6,10 +6,16 @@ Current tomcat version: tomcat7 (Ubuntu), tomcat (CentOS)
 
 ## issues
 
-1. Does not yet work with CentOS
 2. Need to add `with_first_found` for finding variables to use different versions of Ubuntu and CentOS
 3. I could make a dictionary for multiple user/pass combos
 4. CentOS guacamole-client doesn't work, CentOS guacamole-server is untested
+
+----------------------------------------------------------------------------------
+
+## changes
+
+1. Now works with CentOS 6
+
 
 ----------------------------------------------------------------------------------
 ## GUACAMOLE_HOME

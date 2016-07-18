@@ -3,11 +3,6 @@
 TOMCAT_VERSION: tomcat7
 
 PACKAGES:
-  - default-jdk
-  - software-properties-common
-  - oracle-java8-installer
-  - oracle-java8-set-default
-  - maven
   - tightvncserver
   - guacd
 
