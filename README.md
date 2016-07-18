@@ -49,12 +49,13 @@ Run the commands above to verify the md5 checksum. If the result is the same as 
 ####run the ansible
 
 1. Replace all `< >` wrapped variables with desired values
+
 2. Fill out `hosts` file with correct information
 3. Run `guacamole_server_pb.yml` on the server machine:
 
 	`ansible-playbook -l guac-server playbooks/guacamole_server_pb.yml`
 
-4. Run `guacamole_client_pb.yml` on all client machines
+4. Run `guacamole_client_pb.yml` on all client machines:
 
 	`ansible-playbook -l guac-clients playbooks/guacamole_client_pb.yml`
 
