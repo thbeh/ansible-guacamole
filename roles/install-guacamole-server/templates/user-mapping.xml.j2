@@ -1,5 +1,6 @@
 <user-mapping>
-   <authorize username="{{ GUACD_USERNAME }}" password="{{ GUACD_PASSWORD }}">
+{% for thing in USERS %}
+   <authorize username="{{ USERS }}" password="{{ GUACD_PASSWORD }}">
 <!-- I have localhost VNC disabled by default
       <connection name="localhost">
          <protocol>vnc</protocol>
@@ -19,13 +20,6 @@
       </connection>
 {% endfor %}
 
-   <!--This is how additional users can be added
-   <authorize username="USERNAME" password="PASSWORD">
-      <connection name="localhost">   
-         <protocol>vnc</protocol>
-         <param name="hostname">localhost</param>
-         <param name="port">5900</param>
-         <param name="password">VNCPASS</param>
-      </connection> -->
    </authorize>
+{% endfor %}
 </user-mapping>

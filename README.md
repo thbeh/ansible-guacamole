@@ -38,7 +38,8 @@ You can easily change this with the `GUACAMOLE_HOME` variable
 ```
 calvinmclean$ openssl md5 guacamole-0.9.9.war 
 MD5(guacamole-0.9.9.war)= 324c17aa305a077a2127378a2d0a7a51
-
+```
+```
 calvinmclean$ openssl md5 guacamole-server-0.9.9.tar.gz 
 MD5(guacamole-server-0.9.9.tar.gz)= cce818bfcba35fe0456b45d988118893
 ```

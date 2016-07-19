@@ -44,3 +44,11 @@ CLIENTS:
     port: 5901
     pass: password
     protocol: vnc
+
+USERS:
+  User1:
+    name: User1
+    pass: password
+  User2:
+    name: User2
+    pass: password
