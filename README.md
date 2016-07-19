@@ -7,6 +7,7 @@ Current tomcat version: **tomcat7** (Ubuntu), **tomcat** (CentOS)
 ## Issues:
 
 1. Need to add `with_first_found` for finding variables to use different versions of Ubuntu and CentOS
+2. Although there can be multiple guacamole users with access to different machines, all will connect with the same username on the machine
 
 
 ----------------------------------------------------------------------------------
