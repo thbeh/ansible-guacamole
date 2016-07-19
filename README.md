@@ -1,18 +1,17 @@
 # ansible-guacamole
 
-Current guacamole version: 0.9.9
+Current guacamole version: **0.9.9**
 
-Current tomcat version: tomcat7 (Ubuntu), tomcat (CentOS)
+Current tomcat version: **tomcat7** (Ubuntu), **tomcat** (CentOS)
 
-## issues
+## Issues:
 
-2. Need to add `with_first_found` for finding variables to use different versions of Ubuntu and CentOS
-3. I could make a dictionary for multiple user/pass combos
-4. CentOS guacamole-client doesn't work, CentOS guacamole-server is untested
+1. Need to add `with_first_found` for finding variables to use different versions of Ubuntu and CentOS
+2. I could make a dictionary for multiple user/pass combos
 
 ----------------------------------------------------------------------------------
 
-## changes
+## Changes:
 
 1. Now works with CentOS 6
 
@@ -27,14 +26,14 @@ Current tomcat version: tomcat7 (Ubuntu), tomcat (CentOS)
 >	- The directory specified within the environment variable GUACAMOLE_HOME.
 >	- The directory .guacamole, located within the home directory of the user running the servlet container.
 
-We will use the third option, with the configuration directory `/usr/share/tomcat7/.guacamole`
+We will use the third option, with the configuration directory `/usr/share/{{ TOMCAT_VERSION }}/.guacamole`
 
-You can easily change this with the `{{GUACAMOLE_HOME}}` variable
+You can easily change this with the `GUACAMOLE_HOME` variable
 
 ----------------------------------------------------------------------------------
-## how to
+## How to use it:
 
-####verify files
+####Verify files:
 
 ```
 calvinmclean$ openssl md5 guacamole-0.9.9.war 
@@ -46,7 +45,9 @@ MD5(guacamole-server-0.9.9.tar.gz)= cce818bfcba35fe0456b45d988118893
 
 Run the commands above to verify the md5 checksum. If the result is the same as mine, the files are valid.
 
-####run the ansible
+####Run the Ansible:
+
+**Step 0:** *If there is a [newer version of Guacamole](http://guacamole.incubator.apache.org/releases/) out, replace the files in the* `roles/install-guacamole-server/files/` *directory and change* `GUACAMOLE_VERSION` *var to match the new version.*
 
 1. Replace all `< >` wrapped variables with desired values
 
@@ -59,5 +60,5 @@ Run the commands above to verify the md5 checksum. If the result is the same as 
 
 	`ansible-playbook -l guac-clients playbooks/guacamole_client_pb.yml`
 
-5. Visit `your-hostname:8080/guacamole` and login
-6. Use `Atl+Shift+Ctrl` to view the guacamole menu
+5. Visit `your-hostname:8080/guacamole` and login (using `GUACD_USERNAME` and `GUACD_PASSWORD` vars)
+6. Use `Alt+Shift+Ctrl` to view the Guacamole menu

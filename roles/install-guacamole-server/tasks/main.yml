@@ -4,7 +4,8 @@
   include_vars: "{{ ansible_distribution }}.yml"
   tags: vars
 
-- block:
+- tags: install
+  block:
   - name: Add Oracle Java repository
     apt_repository: repo="ppa:webupd8team/java"
     when: ansible_distribution == "Ubuntu"
@@ -15,53 +16,52 @@
     action: >
       {{ ansible_pkg_mgr }} name={{ item }} state=latest
     with_items: '{{ PACKAGES }}'
-  tags: install
 
 - name: Copy over guacamole-server source
-  copy: src="files/{{ GUACAMOLE_VERSION }}.tar.gz" dest=/tmp/
+  copy: src="files/guacamole-server-{{ GUACAMOLE_VERSION }}.tar.gz" dest=/tmp/
   tags: file
 
 - name: Extract the guacamole-server source
-  unarchive: src="/tmp/{{ GUACAMOLE_VERSION }}.tar.gz" copy=no dest="/tmp/"
+  unarchive: src="/tmp/guacamole-server-{{ GUACAMOLE_VERSION }}.tar.gz" copy=no dest="/tmp/"
   tags: extract
 
-- block: 
+- tags: build, install
+  block: 
     - name: Build guacamole-server from source
-      shell: ./configure --with-init-dir=/etc/init.d chdir=/tmp/{{ GUACAMOLE_VERSION }}
+      shell: ./configure --with-init-dir=/etc/init.d chdir=/tmp/guacamole-server-{{ GUACAMOLE_VERSION }}
     - name: Build guacamole-server from source
-      shell: make chdir=/tmp/{{ GUACAMOLE_VERSION }}
+      shell: make chdir=/tmp/guacamole-server-{{ GUACAMOLE_VERSION }}
     - name: Build guacamole-server from source
-      shell: make install chdir=/tmp/{{ GUACAMOLE_VERSION }}
+      shell: make install chdir=/tmp/guacamole-server-{{ GUACAMOLE_VERSION }}
     - name: Build guacamole-server from source
       shell: ldconfig
-  tags: build, install
 
-- name: Copy over {{ GUACAMOLE_WAR }}.war
-  copy: src="files/{{ GUACAMOLE_WAR }}.war" dest=/var/lib/{{ TOMCAT_VERSION }}/webapps/guacamole.war
+- name: Copy over guacamole-{{ GUACAMOLE_VERSION }}.war
+  copy: src="files/guacamole-{{ GUACAMOLE_VERSION }}.war" dest=/var/lib/{{ TOMCAT_VERSION }}/webapps/guacamole.war
   tags: file
 
-- block:
-  - name: delete {{ GUACAMOLE_VERSION }}.tar.gz
-    file: path=/tmp/{{ GUACAMOLE_VERSION }}.tar.gz state=absent
-  - name: delete {{ GUACAMOLE_VERSION }} directory
-    file: path=/tmp/{{ GUACAMOLE_VERSION }} state=absent
-  tags: clear-files
+- tags: clear-files
+  block:
+  - name: delete guacamole-server-{{ GUACAMOLE_VERSION }}.tar.gz
+    file: path=/tmp/guacamole-server-{{ GUACAMOLE_VERSION }}.tar.gz state=absent
+  - name: delete guacamole-server-{{ GUACAMOLE_VERSION }} directory
+    file: path=/tmp/guacamole-server-{{ GUACAMOLE_VERSION }} state=absent
 
 - name: Make '{{ GUACAMOLE_HOME }}' directory
   file: path='{{ GUACAMOLE_HOME }}' state=directory
   tags: configuration
 
-- block:
+- tags: template
+  block:
   - name: Add guacamole.properties to "{{ GUACAMOLE_HOME }}"
     template: src="guacamole.properties.j2" dest="{{ GUACAMOLE_HOME }}/guacamole.properties"
   - name: Add user-mapping.xml to "{{ GUACAMOLE_HOME }}"
     template: src="user-mapping.xml.j2" dest="{{ GUACAMOLE_HOME }}/user-mapping.xml" backup=yes
-  tags: template
-
-- block:
+  
+- tags: restart
+  block:
   - name: restart tomcat
     service: name={{ TOMCAT_VERSION }} state=restarted
   - name: restart guacd
     service: name=guacd state=restarted
-  tags: restart
   

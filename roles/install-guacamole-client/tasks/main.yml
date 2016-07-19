@@ -4,24 +4,23 @@
   include_vars: "{{ ansible_distribution }}.yml"
   tags: vars
 
-- block:
+- tags: install
+  block:
   - name: Add Oracle Java repository
     apt_repository: repo="ppa:webupd8team/java"
     when: ansible_distribution == "Ubuntu"
 
-  - block:
+  - when: ansible_distribution == "CentOS"
+    block:
     - name: Install epel-release for CentOS
       yum: name=epel-release state=latest update_cache=yes
     - name: Remove realvnc from CentOS atmoVM
       yum: name=realvnc-vnc-server state=absent
-    when: ansible_distribution == "CentOS"
 
   - name: Install dependencies for guacamole
     action: >
       {{ ansible_pkg_mgr }} name={{ item }} state=latest
     with_items: '{{ PACKAGES }}'
-
-  tags: install
 
 - name: Make '{{ GUACAMOLE_HOME_CLIENT }}' directory
   file: path='{{ GUACAMOLE_HOME_CLIENT }}' state=directory
@@ -31,7 +30,8 @@
   template: src="guacamole.properties.j2" dest="{{ GUACAMOLE_HOME_CLIENT }}/guacamole.properties"
   tags: template
 
-- block:
+- tags: vnc
+  block:
   - name: kill all running vncserver sessions
     shell: /bin/su {{ VNC_USER }} -c "/usr/bin/{{ VNC_COMMAND }} -kill :'{{ item }}'"
     with_items:
@@ -48,7 +48,6 @@
     shell: /bin/su {{ VNC_USER }} -c "/usr/bin/printf '%s\n%s\n' '{{ VNC_PASS }}' '{{ VNC_PASS }}' | {{ VNC_PASS_COMMAND }}"
   - name: start vncserver
     shell: /bin/su {{ VNC_USER }} -c {{ VNC_COMMAND }}
-  tags: vnc
 
 - name: restart guacd
   service: name=guacd state=restarted

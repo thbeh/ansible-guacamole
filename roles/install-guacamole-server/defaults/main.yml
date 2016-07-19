@@ -10,9 +10,7 @@ GUACD_PASSWORD: <password>
 
 GUACAMOLE_HOME: /usr/share/{{ TOMCAT_VERSION }}/.guacamole
 
-GUACAMOLE_VERSION: guacamole-server-0.9.9
-
-GUACAMOLE_WAR: guacamole-0.9.9
+GUACAMOLE_VERSION: 0.9.9
 
 # Reconfigure all variables in this dict to fit your needs
 CLIENTS:

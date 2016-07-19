@@ -7,10 +7,6 @@ GUACD_PORT: 4822
 
 GUACAMOLE_HOME_CLIENT: /etc/guacamole
 
-GUACAMOLE_VERSION: guacamole-client-0.9.9
-
-GUACAMOLE_WAR: guacamole-0.9.9
-
 # Password set on your VNC server (tightvncserver, vncserver)
 VNC_USER: <username>
 
