@@ -1,7 +1,7 @@
 <user-mapping>
 {% for thing in USERS %}
    <authorize username="{{ USERS[thing].name }}" password="{{ USERS[thing].pass }}">
-{% for item in CLIENTS %}
+{% for item in USERS[thing].boxes %}
       <connection name="{{ CLIENTS[item].name }}">
          <protocol>{{ CLIENTS[item].protocol }}</protocol>
          <param name="hostname">{{ CLIENTS[item].hostname }}</param>

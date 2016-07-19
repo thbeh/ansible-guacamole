@@ -7,12 +7,7 @@ Current tomcat version: **tomcat7** (Ubuntu), **tomcat** (CentOS)
 ## Issues:
 
 1. Need to add `with_first_found` for finding variables to use different versions of Ubuntu and CentOS
-2. To improve multi-user capability:
-	- Add `authorized-users` list in the `CLIENTS` dictionary and an if statement in `user-mapping.xml.j2` template so the for loop will only add clients if `CLIENTS[item].authoried-users` contains `USERS[thing].name`
-	
-	**OR**
-	
-	- Add `boxes` list in the `USERS` dictionary containing the keys from the `CLIENTS` dictionary and then iterate over that dictionary using those keys: `{% for item in USERS[thing].boxes %}` so each "item" will be a key for `CLIENTS`
+
 
 ----------------------------------------------------------------------------------
 
@@ -20,6 +15,8 @@ Current tomcat version: **tomcat7** (Ubuntu), **tomcat** (CentOS)
 
 1. Now works with CentOS 6
 2. Added dictionary for multiple user capabilities
+	- Added `boxes` list in the `USERS` dictionary containing the keys from the `CLIENTS` dictionary and then iterate over that dictionary using those keys: `{% for item in USERS[thing].boxes %}` so each "item" will be a key for `CLIENTS`
+ 
 
 
 ----------------------------------------------------------------------------------

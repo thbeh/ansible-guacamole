@@ -13,31 +13,31 @@ GUACAMOLE_VERSION: 0.9.9
 
 # Reconfigure all variables in this dict to fit your needs
 CLIENTS:
-  Box1:
+  1:
     name: Box1
     hostname: 0.0.0.0
     port: 5901
     pass: password
     protocol: vnc
-  Box2: 
+  2:
     name: Box2
     hostname: 0.0.0.0
     port: 5901
     pass: password
     protocol: vnc
-  Box3: 
+  3:
     name: Box3
     hostname: 0.0.0.0
     port: 5901
     pass: password
     protocol: vnc
-  Box4: 
+  4:
     name: Box4
     hostname: 0.0.0.0
     port: 5901
     pass: password
     protocol: vnc
-  Box5: 
+  5:
     name: Box5
     hostname: 0.0.0.0
     port: 5901
@@ -60,6 +60,14 @@ USERS:
   User1:
     name: User1
     pass: password
+    boxes:
+      - 1
+      - 2
+      - 3
   User2:
     name: User2
     pass: password
+    boxes:
+      - 1
+      - 2
+      - 3
