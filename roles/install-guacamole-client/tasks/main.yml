@@ -4,25 +4,23 @@
   include_vars: "{{ ansible_distribution }}.yml"
   tags: vars
 
-- name: Add Oracle Java repository
-  apt_repository: repo="ppa:webupd8team/java"
-  when: ansible_distribution == "Ubuntu"
+- block:
+  - name: Add Oracle Java repository
+    apt_repository: repo="ppa:webupd8team/java"
+    when: ansible_distribution == "Ubuntu"
 
-- name: Install epel-release for CentOS
-  yum: name=epel-release state=latest update_cache=yes
-  when: ansible_distribution == "CentOS"
-  tags: install
+  - block:
+    - name: Install epel-release for CentOS
+      yum: name=epel-release state=latest update_cache=yes
+    - name: Remove realvnc from CentOS atmoVM
+      yum: name=realvnc-vnc-server state=absent
+    when: ansible_distribution == "CentOS"
 
-#Only necessary for VMs I am testing on bc realvnc is installed
-- name: Remove realvnc from CentOS atmoVM
-  yum: name=realvnc-vnc-server state=absent
-  when: ansible_distribution == "CentOS"
-  tags: install
+  - name: Install dependencies for guacamole
+    action: >
+      {{ ansible_pkg_mgr }} name={{ item }} state=latest
+    with_items: '{{ PACKAGES }}'
 
-- name: Install dependencies for guacamole
-  action: >
-    {{ ansible_pkg_mgr }} name={{ item }} state=latest
-  with_items: '{{ PACKAGES }}'
   tags: install
 
 - name: Make '{{ GUACAMOLE_HOME_CLIENT }}' directory
@@ -33,26 +31,23 @@
   template: src="guacamole.properties.j2" dest="{{ GUACAMOLE_HOME_CLIENT }}/guacamole.properties"
   tags: template
 
-- name: kill all running vncserver sessions
-  shell: /bin/su {{ VNC_USER }} -c "/usr/bin/{{ VNC_COMMAND }} -kill :'{{ item }}'"
-  with_items:
-    - 1
-    - 2
-    - 3
-    - 4
-    - 5
-    - 6
-    - 7
-    - 8
-  failed_when: False
-  tags: vnc
-
-- name: Configure VNC password
-  shell: /bin/su {{ VNC_USER }} -c "/usr/bin/printf '%s\n%s\n' '{{ VNC_PASS }}' '{{ VNC_PASS }}' | {{ VNC_PASS_COMMAND }}"
-  tags: vnc
-
-- name: start vncserver
-  shell: /bin/su {{ VNC_USER }} -c {{ VNC_COMMAND }}
+- block:
+  - name: kill all running vncserver sessions
+    shell: /bin/su {{ VNC_USER }} -c "/usr/bin/{{ VNC_COMMAND }} -kill :'{{ item }}'"
+    with_items:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+    failed_when: False
+  - name: Configure VNC password
+    shell: /bin/su {{ VNC_USER }} -c "/usr/bin/printf '%s\n%s\n' '{{ VNC_PASS }}' '{{ VNC_PASS }}' | {{ VNC_PASS_COMMAND }}"
+  - name: start vncserver
+    shell: /bin/su {{ VNC_USER }} -c {{ VNC_COMMAND }}
   tags: vnc
 
 - name: restart guacd
