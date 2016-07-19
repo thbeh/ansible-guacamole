@@ -2,12 +2,6 @@
 
 GUACD_PORT: 4822
 
-# Username used to login to guacamole web interface (different from VNC_USER)
-GUACD_USERNAME: <user>
-
-# Password used to login to guacamole web interface (different from VNC_USER)
-GUACD_PASSWORD: <password>
-
 GUACAMOLE_HOME: /usr/share/{{ TOMCAT_VERSION }}/.guacamole
 
 GUACAMOLE_VERSION: 0.9.9
@@ -45,10 +39,12 @@ CLIENTS:
     pass: password
     protocol: vnc
 
+# Username used to login to guacamole web interface (different from VNC_USER)
+# Password used to login to guacamole web interface (different from VNC_USER)
 USERS:
   User1:
-    name: User1
-    pass: password
+    name: <User1>
+    pass: <password>
   User2:
-    name: User2
-    pass: password
+    name: <User2>
+    pass: <password>

@@ -1,14 +1,6 @@
 <user-mapping>
 {% for thing in USERS %}
-   <authorize username="{{ USERS }}" password="{{ GUACD_PASSWORD }}">
-<!-- I have localhost VNC disabled by default
-      <connection name="localhost">
-         <protocol>vnc</protocol>
-         <param name="hostname">localhost</param>
-         <param name="port">5901</param>
-         <param name="password">password</param>
-      </connection> -->
-
+   <authorize username="{{ USERS[thing].name }}" password="{{ USERS[thing].pass }}">
 {% for item in CLIENTS %}
       <connection name="{{ CLIENTS[item].name }}">
          <protocol>{{ CLIENTS[item].protocol }}</protocol>
@@ -19,7 +11,6 @@
 {% endif %}
       </connection>
 {% endfor %}
-
    </authorize>
 {% endfor %}
 </user-mapping>

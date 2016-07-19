@@ -7,13 +7,19 @@ Current tomcat version: **tomcat7** (Ubuntu), **tomcat** (CentOS)
 ## Issues:
 
 1. Need to add `with_first_found` for finding variables to use different versions of Ubuntu and CentOS
-2. I could make a dictionary for multiple user/pass combos
+2. To improve multi-user capability:
+	- Add `authorized-users` list in the `CLIENTS` dictionary and an if statement in `user-mapping.xml.j2` template so the for loop will only add clients if `CLIENTS[item].authoried-users` contains `USERS[thing].name`
+	
+	**OR**
+	
+	- Add `boxes` list in the `USERS` dictionary containing the keys from the `CLIENTS` dictionary and then iterate over that dictionary using those keys: `{% for item in USERS[thing].boxes %}` so each "item" will be a key for `CLIENTS`
 
 ----------------------------------------------------------------------------------
 
 ## Changes:
 
 1. Now works with CentOS 6
+2. Added dictionary for multiple user capabilities
 
 
 ----------------------------------------------------------------------------------
@@ -61,5 +67,5 @@ Run the commands above to verify the md5 checksum. If the result is the same as 
 
 	`ansible-playbook -l guac-clients playbooks/guacamole_client_pb.yml`
 
-5. Visit `your-hostname:8080/guacamole` and login (using `GUACD_USERNAME` and `GUACD_PASSWORD` vars)
+5. Visit `your-hostname:8080/guacamole` and login (using `USERS` dictionary)
 6. Use `Alt+Shift+Ctrl` to view the Guacamole menu
