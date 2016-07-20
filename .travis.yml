@@ -11,3 +11,4 @@ install:
   - pip install ansible
 
 script: ansible-playbook playbooks/guacamole_server_pb.yml --syntax-check
+script: ansible-playbook playbooks/guacamole_client_pb.yml --syntax-check
