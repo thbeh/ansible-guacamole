@@ -19,6 +19,7 @@ Current tomcat version: **tomcat7** (Ubuntu), **tomcat** (CentOS)
 2. Added dictionary for multiple user capabilities
 	- Added `boxes` list in the `USERS` dictionary containing the keys from the `CLIENTS` dictionary and then iterate over that dictionary using those keys: `{% for item in USERS[thing].boxes %}` so each "item" will be a key for `CLIENTS`
 3. Removed installation of any packages from client side, also uses RealVNC now
+4. Removed anyhting Guacamole relate from client side (no more `/etc/guacamole/guacamole.properties`). The client role only configures RealVNC to work with the Guacamole server
  
 
 
@@ -59,13 +60,14 @@ Run the commands above to verify the md5 checksum. If the result is the same as 
 1. Replace all `< >` wrapped variables with desired values
 
 2. Fill out `hosts` file with correct information
-3. Run `guacamole_server_pb.yml` on the server machine:
+3. Navigate to the `ansible-guacamole` directory
+4. Run `guacamole_server_pb.yml` on the server machine:
 
 	`ansible-playbook -l guac-server playbooks/guacamole_server_pb.yml`
 
-4. Run `guacamole_client_pb.yml` on all client machines:
+5. Run `guacamole_client_pb.yml` on all client machines:
 
 	`ansible-playbook -l guac-clients playbooks/guacamole_client_pb.yml`
 
-5. Visit `your-hostname:8080/guacamole` and login (using `USERS` dictionary)
-6. Use `Alt+Shift+Ctrl` to view the Guacamole menu
+6. Visit `your-hostname:8080/guacamole` and login (using `USERS` dictionary)
+7. Use `Alt+Shift+Ctrl` to view the Guacamole menu

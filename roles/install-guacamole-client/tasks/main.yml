@@ -1,17 +1,5 @@
 ---
 
-- name: Gather OS-specific variables
-  include_vars: "{{ ansible_distribution }}.yml"
-  tags: vars
-
-- name: Make '{{ GUACAMOLE_HOME_CLIENT }}' directory
-  file: path='{{ GUACAMOLE_HOME_CLIENT }}' state=directory
-  tags: configuration
-
-- name: Add guacamole.properties to "{{ GUACAMOLE_HOME_CLIENT }}"
-  template: src="guacamole.properties.j2" dest="{{ GUACAMOLE_HOME_CLIENT }}/guacamole.properties"
-  tags: template
-
 - tags: vnc
   block:
   - name: kill all running vncserver sessions

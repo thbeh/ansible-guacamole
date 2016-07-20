@@ -1,12 +1,5 @@
 ---
 
-# Hostname or IP of the server (same name used to navigate to the web UI)
-GUACD_HOSTNAME: <hostname>
-
-GUACD_PORT: 4822
-
-GUACAMOLE_HOME_CLIENT: /etc/guacamole
-
 # Password set on your VNC server (tightvncserver, vncserver)
 VNC_USER: <username>
 
