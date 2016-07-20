@@ -13,3 +13,5 @@ install:
 script: 
   - ansible-playbook playbooks/guacamole_server_pb.yml --syntax-check
   - ansible-playbook playbooks/guacamole_client_pb.yml --syntax-check
+  - ansible-playbook playbooks/guacamole_client_pb.yml --connection=local --sudo
+  - ansible-playbook playbooks/guacamole_server_pb.yml --connection=local --sudo
