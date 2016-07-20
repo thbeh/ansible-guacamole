@@ -14,4 +14,5 @@ install:
   - "printf '[defaults]\nroles_path = ../' > ansible.cfg"
 
 script:
-  # We'll add some commands to test the role here.
+  - ansible-playbook playbooks/guacamole_server_pb.yml --syntax-check
+  - ansible-playbook playbooks/guacamole_client_pb.yml --syntax-check
