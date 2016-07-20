@@ -13,6 +13,6 @@ install:
   # Add ansible.cfg to pick up roles path.
   - "printf '[defaults]\nroles_path = ../' > ansible.cfg"
 
-script:
+script: make test
   - ansible-playbook playbooks/guacamole_server_pb.yml --syntax-check
   - ansible-playbook playbooks/guacamole_client_pb.yml --syntax-check
