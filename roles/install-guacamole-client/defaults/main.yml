@@ -12,3 +12,6 @@ VNC_USER: <username>
 
 # Password set on your VNC server (tightvncserver, vncserver)
 VNC_PASS: <password>
+
+#Command used to control vncserver (tightvncserver, vncserver)
+VNC_COMMAND: vncserver

@@ -17,6 +17,7 @@ Current tomcat version: **tomcat7** (Ubuntu), **tomcat** (CentOS)
 1. Now works with CentOS 6
 2. Added dictionary for multiple user capabilities
 	- Added `boxes` list in the `USERS` dictionary containing the keys from the `CLIENTS` dictionary and then iterate over that dictionary using those keys: `{% for item in USERS[thing].boxes %}` so each "item" will be a key for `CLIENTS`
+3. Removed installation of any packages from client side, also uses RealVNC now
  
 
 

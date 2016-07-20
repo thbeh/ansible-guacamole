@@ -54,6 +54,9 @@ VNC_USER: <username>
 # Password set on your VNC server (tightvncserver, vncserver)
 VNC_PASS: <password>
 
+#Command used to control vncserver (tightvncserver, vncserver)
+VNC_COMMAND: vncservers
+
 # Username used to login to guacamole web interface (different from VNC_USER)
 # Password used to login to guacamole web interface (different from VNC_USER)
 USERS:

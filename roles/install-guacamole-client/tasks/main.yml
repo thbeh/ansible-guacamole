@@ -4,24 +4,6 @@
   include_vars: "{{ ansible_distribution }}.yml"
   tags: vars
 
-- tags: install
-  block:
-  - name: Add Oracle Java repository
-    apt_repository: repo="ppa:webupd8team/java"
-    when: ansible_distribution == "Ubuntu"
-
-  - when: ansible_distribution == "CentOS"
-    block:
-    - name: Install epel-release for CentOS
-      yum: name=epel-release state=latest update_cache=yes
-    - name: Remove realvnc from CentOS atmoVM
-      yum: name=realvnc-vnc-server state=absent
-
-  - name: Install dependencies for guacamole
-    action: >
-      {{ ansible_pkg_mgr }} name={{ item }} state=latest
-    with_items: '{{ PACKAGES }}'
-
 - name: Make '{{ GUACAMOLE_HOME_CLIENT }}' directory
   file: path='{{ GUACAMOLE_HOME_CLIENT }}' state=directory
   tags: configuration
@@ -44,11 +26,16 @@
       - 7
       - 8
     failed_when: False
-  - name: Configure VNC password
-    shell: /bin/su {{ VNC_USER }} -c "/usr/bin/printf '%s\n%s\n' '{{ VNC_PASS }}' '{{ VNC_PASS }}' | {{ VNC_PASS_COMMAND }}"
+  - name: Disable encryption in realvnc
+    lineinfile: 
+      dest: /etc/vnc/config.custom
+      state: present
+      backrefs: yes
+      regexp: "^SecurityTypes=RA2"
+      line: "SecurityTypes=VncAuth"
   - name: start vncserver
-    shell: /bin/su {{ VNC_USER }} -c {{ VNC_COMMAND }}
+    shell: /usr/bin/printf '%s\n%s\n' '{{ VNC_PASS }}' '{{ VNC_PASS }}' | /bin/su {{ VNC_USER }} -c {{ VNC_COMMAND }}
 
-- name: restart guacd
-  service: name=guacd state=restarted
-  tags: restart
+# task for changing VNC pass if for some reason the above task doesn't do it
+# - name: Configure VNC password
+#   shell: /bin/su {{ VNC_USER }} -c "/usr/bin/printf '%s\n%s\n' '{{ VNC_PASS }}' '{{ VNC_PASS }}' | {{ VNC_PASS_COMMAND }}"
