@@ -10,7 +10,4 @@ install:
   # Install Ansible.
   - pip install ansible
 
-  # Add ansible.cfg to pick up roles path.
-  - "printf '[defaults]\nroles_path = ../' > ansible.cfg"
-
 script: ansible-playbook playbooks/guacamole_server_pb.yml --syntax-check
