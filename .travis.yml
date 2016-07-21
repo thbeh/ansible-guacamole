@@ -18,5 +18,5 @@ install:
 script: 
   - ansible-playbook -i inventory/inventory playbooks/guacamole_server_pb.yml --syntax-check
   - ansible-playbook -i inventory/inventory playbooks/guacamole_client_pb.yml --syntax-check
-  - ansible-playbook -i inventory/inventory playbooks/guacamole_client_pb.yml --connection=local --sudo
-  - ansible-playbook -i inventory/inventory playbooks/guacamole_server_pb.yml --connection=local --sudo
+  - ansible-playbook -i inventory/inventory playbooks/guacamole_client_pb.yml
+  - ansible-playbook -i inventory/inventory playbooks/guacamole_server_pb.yml
