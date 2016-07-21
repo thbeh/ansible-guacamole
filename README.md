@@ -1,5 +1,7 @@
 # ansible-guacamole
 
+[![Build Status](https://travis-ci.org/calvinmclean/ansible-guacamole.svg?branch=master)](https://travis-ci.org/calvinmclean/ansible-guacamole)
+
 Current guacamole version: **0.9.9**
 
 Current tomcat version: **tomcat7** (Ubuntu), **tomcat** (CentOS)
