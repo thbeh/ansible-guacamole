@@ -1,9 +1,9 @@
 ---
 
-dist: 
-  - precise
-  - trusty
-  - xenial
+dist: trusty
+  # - precise
+  # - trusty
+  # - xenial
 language: python
 python: "2.7"
 
