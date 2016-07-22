@@ -7,6 +7,7 @@ GUACAMOLE_HOME: /usr/share/{{ TOMCAT_VERSION }}/.guacamole
 GUACAMOLE_VERSION: 0.9.9
 
 # Reconfigure all variables in this dict to fit your needs
+# Leave "pass" blank for ssh protocols and "conn_pass" False
 CLIENTS:
   1:
     name: Box1
@@ -14,30 +15,35 @@ CLIENTS:
     port: 5901
     pass: password
     protocol: vnc
+    conn_pass: True
   2: 
     name: Box2
     hostname: 0.0.0.0
     port: 5901
     pass: password
     protocol: vnc
+    conn_pass: True
   3: 
     name: Box3
     hostname: 0.0.0.0
     port: 5901
     pass: password
     protocol: vnc
+    conn_pass: True
   4: 
     name: Box4
     hostname: 0.0.0.0
     port: 5901
     pass: password
     protocol: vnc
+    conn_pass: True
   5: 
     name: Box5
     hostname: 0.0.0.0
-    port: 5901
-    pass: password
-    protocol: vnc
+    port: 22
+    pass: 
+    protocol: ssh
+    conn_pass: False
 
 # Username used to login to guacamole web interface (different from VNC_USER)
 # Password used to login to guacamole web interface (different from VNC_USER)

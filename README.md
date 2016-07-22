@@ -17,18 +17,6 @@ To add multiple vnc-users:
 - Remember that with multiple VNCs on one machine, I will need to keep track of ports for user-mapping.xml
 
 ----------------------------------------------------------------------------------
-
-## Changes:
-
-1. Now works with CentOS 6
-2. Added dictionary for multiple user capabilities
-	- Added `boxes` list in the `USERS` dictionary containing the keys from the `CLIENTS` dictionary and then iterate over that dictionary using those keys: `{% for item in USERS[thing].boxes %}` so each "item" will be a key for `CLIENTS`
-3. Removed installation of any packages from client side, also uses RealVNC now
-4. Removed anyhting Guacamole relate from client side (no more `/etc/guacamole/guacamole.properties`). The client role only configures RealVNC to work with the Guacamole server
- 
-
-
-----------------------------------------------------------------------------------
 ## GUACAMOLE_HOME
 
 [From "Configuring Guacamole":](http://guacamole.incubator.apache.org/doc/gug/configuring-guacamole.html)
@@ -63,6 +51,8 @@ Run the commands above to verify the md5 checksum. If the result is the same as 
 **Step 0:** *If there is a [newer version of Guacamole](http://guacamole.incubator.apache.org/releases/) out, replace the files in the* `roles/install-guacamole-server/files/` *directory and change* `GUACAMOLE_VERSION` *var to match the new version.*
 
 1. Replace all `< >` wrapped variables with desired values
+	- `install-guacamole-client/defaults/main.yml`: `VNC_USER` and `VNC_PASS`
+	- `install-guacamole-server/defaults/main.yml`: `CLIENTS` and `USERS` dictionaries
 
 2. Fill out `hosts` file with correct information
 3. Navigate to the `ansible-guacamole` directory
@@ -74,5 +64,5 @@ Run the commands above to verify the md5 checksum. If the result is the same as 
 
 	`ansible-playbook -l guac-clients playbooks/guacamole_client_pb.yml`
 
-6. Visit `your-hostname:8080/guacamole` and login (using `USERS` dictionary)
+6. Visit `your-hostname:8080/guacamole` and login (using credentials set in `USERS` dictionary)
 7. Use `Alt+Shift+Ctrl` to view the Guacamole menu

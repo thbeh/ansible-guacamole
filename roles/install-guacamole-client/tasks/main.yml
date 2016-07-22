@@ -13,7 +13,7 @@
     - 8
   failed_when: False
 
-- name: Disable encryption in realvnc
+- name: disable encryption in realvnc
   lineinfile: 
     dest: /etc/vnc/config.custom
     state: present
@@ -24,6 +24,6 @@
 - name: start vncserver
   shell: /usr/bin/printf '%s\n%s\n' '{{ VNC_PASS }}' '{{ VNC_PASS }}' | /bin/su {{ VNC_USER }} -c {{ VNC_COMMAND }}
 
-# task for changing VNC pass if for some reason the above task doesn't do it
+# task for changing VNC pass if needed
 # - name: Configure VNC password
 #   shell: /bin/su {{ VNC_USER }} -c "/usr/bin/printf '%s\n%s\n' '{{ VNC_PASS }}' '{{ VNC_PASS }}' | {{ VNC_PASS_COMMAND }}"

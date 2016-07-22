@@ -1,10 +1,5 @@
 ---
 
-# Server
-
-# Hostname or IP of the server (same name used to navigate to the web UI)
-GUACD_HOSTNAME: <hostname>
-
 GUACD_PORT: 4822
 
 GUACAMOLE_HOME: /usr/share/{{ TOMCAT_VERSION }}/.guacamole
