@@ -58,11 +58,11 @@ Run the commands above to verify the md5 checksum. If the result is the same as 
 3. Navigate to the `ansible-guacamole` directory
 4. Run `guacamole_server_pb.yml` on the server machine:
 
-	`ansible-playbook -l guac-server playbooks/guacamole_server_pb.yml`
+	`ansible-playbook playbooks/guacamole_server_pb.yml`
 
 5. Run `guacamole_client_pb.yml` on all client machines:
 
-	`ansible-playbook -l guac-clients playbooks/guacamole_client_pb.yml`
+	`ansible-playbook playbooks/guacamole_client_pb.yml`
 
 6. Visit `your-hostname:8080/guacamole` and login (using credentials set in `USERS` dictionary)
 7. Use `Alt+Shift+Ctrl` to view the Guacamole menu
