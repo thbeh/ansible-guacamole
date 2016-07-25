@@ -51,6 +51,53 @@
   file: path='{{ GUACAMOLE_HOME }}' state=directory
   tags: configuration
 
+- name: Create database
+  mysql_db:
+    name: guacamole_db
+    state: present
+    target: "/tmp/guacamole-auth-jdbc-0.9.9/mysql/schema/'{{ item }}'"
+  with_items:
+    - 001-create-schema.sql
+    - 002-create-admin-user.sql
+  tags: database
+
+- name: Create MySQL user
+  mysql_user: 
+    name: guacamole
+    password: guacamole_db_pass
+    state: present
+    priv: "guacamole_db.*:SELECT,INSERT,UPDATE,DELETE"
+  tags: database
+
+- name: Copy over guacamole-auth source
+  copy: src="files/guacamole-auth-jdbc-0.9.9.tar.gz" dest=/tmp/
+  tags: database
+
+- name: Extract guacamole-auth
+  unarchive: src="/tmp/guacamole-auth-jdbc-0.9.9.tar.gz" copy=no dest="/tmp/"
+  tags: database
+
+- name: Create {{ GUACAMOLE_HOME }}/extensions directory
+  file: path="{{ GUACAMOLE_HOME }}/extensions" state=directory
+  tags: database
+
+- name: Copy over guacamole-auth-jdbc-mysql-0.9.9.jar to {{ GUACAMOLE_HOME }}/extensions
+  copy:
+    src: "/tmp/guacamole-auth-jdbc-0.9.9/mysql/guacamole-auth-jdbc-mysql-0.9.9.jar"
+    remote_src: True
+    dest: "{{ GUACAMOLE_HOME }}/extensions"
+  tags: database
+
+- name: Create {{ GUACAMOLE_HOME }}/lib directory
+  file: path="{{ GUACAMOLE_HOME }}/extensions" state=directory
+  tags: database
+
+- name: Copy over mysql-connector-java-6.0.3-sources.jar to {{ GUACAMOLE_HOME }}/lib
+  copy:
+    src: "files/mysql-connector-java-6.0.3-sources.jar"
+    dest: "{{ GUACAMOLE_HOME }}/lib"
+  tags: database
+
 - tags: template
   block:
   - name: Add guacamole.properties to "{{ GUACAMOLE_HOME }}"
