@@ -62,21 +62,11 @@
   - name: Extract guacamole-auth
     unarchive: src="/tmp/guacamole-auth-jdbc-0.9.9.tar.gz" copy=no dest="/tmp/"
   
-  - name: Make postgres user usable
-    lineinfile:
-      dest: /etc/postgresql/9.3/main/pg_hba.conf
-      regexp: "^local   all             postgres" 
-      line: "local   all             postgres                                peer"
-      backrefs: true
-      state: present
-  
   - name: restart postgresql
     service: name=postgresql state=restarted
   
   - name: Create database
-    postgresql_db:
-      name: guacamole_db
-      state: present
+    postgresql_db: name=guacamole_db state=present
   
   - name: Run schema on guacamole_db
     shell: cat *.sql | psql -U postgres -d guacamole_db -f - chdir=/tmp/guacamole-auth-jdbc-0.9.9/postgresql/schema/
@@ -132,13 +122,12 @@
   template: src="guacamole.properties.j2" dest="{{ GUACAMOLE_HOME }}/guacamole.properties"
   tags: template
   
-- tags: restart
-  block:
-  - name: restart tomcat
-    service: name={{ TOMCAT_VERSION }} state=restarted
-  - name: restart postgresql
-    service: name=postgresql state=restarted
-  - name: restart guacd
-    service: name=guacd state=restarted
-    ignore_errors: yes
+- name: restart services (tomcat,postgresql,guacd)
+  service: name={{ item }} state=restarted
+  with_items:
+    - {{ TOMCAT_VERSION }}
+    - postgresql
+    - guacd
+  ignore_errors: yes
+  tags: restart
   

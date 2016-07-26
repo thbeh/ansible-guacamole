@@ -6,15 +6,10 @@ Current tomcat version: **tomcat7** (Ubuntu), **tomcat** (CentOS)
 
 ## Issues:
 
-1. Need to add `with_first_found` for finding variables to use different versions of Ubuntu and CentOS
-2. Although there can be multiple guacamole users with access to different machines, all will connect with the same username on the machine
-3. Need to add encryption capabilities
-
-To add multiple vnc-users:
-
-- I will need to match vnc_pass/vnc_user with the CLIENTS dict
-- Will need an if statement to check on each box if it is in USERS.boxes
-- Remember that with multiple VNCs on one machine, I will need to keep track of ports for user-mapping.xml
+1. Need to variablize a lot of the database setup
+	- JDBC and guacamole-jdbc.jar versions
+	- paths
+ 
 
 ----------------------------------------------------------------------------------
 ## GUACAMOLE_HOME
