@@ -3,6 +3,7 @@
 TOMCAT_VERSION: tomcat7
 
 PACKAGES:
+  - apache2
   - libcairo2-dev
   - libjpeg-dev
   - libjpeg8-dev
@@ -17,7 +18,9 @@ PACKAGES:
   - oracle-java8-set-default
   - default-jdk
   - guacd
-  - python-mysqldb
+  - python-psycopg2
+  - postgresql
+  - libpq-dev
   # Optionals:
   - libfreerdp-dev
   - libpango1.0-dev
