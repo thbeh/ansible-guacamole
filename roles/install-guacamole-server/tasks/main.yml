@@ -55,37 +55,32 @@
   become: yes
   become_user: postgres
   block:
+  
   - name: Copy over guacamole-auth source
     copy: src="files/guacamole-auth-jdbc-0.9.9.tar.gz" dest=/tmp/
+  
   - name: Extract guacamole-auth
     unarchive: src="/tmp/guacamole-auth-jdbc-0.9.9.tar.gz" copy=no dest="/tmp/"
+  
   - name: Make postgres user usable
     lineinfile:
       dest: /etc/postgresql/9.3/main/pg_hba.conf
       regexp: "^local   all             postgres" 
-      line: "local   all             postgres                                trust"
+      line: "local   all             postgres                                peer"
       backrefs: true
       state: present
+  
   - name: restart postgresql
     service: name=postgresql state=restarted
-
-  # - name: change pass
-  #   postgresql_user:
-  #     name: postgres
-  #     password: password
-  #     state: present
-  #     login_user: postgres
-  #     login_password: password
-  #   tags: database
-
+  
   - name: Create database
     postgresql_db:
       name: guacamole_db
       state: present
-      login_user: postgres
-      login_password: password
+  
   - name: Run schema on guacamole_db
     shell: cat *.sql | psql -U postgres -d guacamole_db -f - chdir=/tmp/guacamole-auth-jdbc-0.9.9/postgresql/schema/
+  
   - name: Create PostgreSQL guacamole user
     postgresql_user:
       name: guacamole_user
@@ -93,22 +88,20 @@
       state: present
       db: guacamole_db
       priv: ALL
+  
   - name: Change guacamole_user table privs
     postgresql_privs:
       db: guacamole_db
       role: guacamole_user
-      login_user: postgres
-      login_password: password
       objs: ALL_IN_SCHEMA
       privs: SELECT,INSERT,UPDATE,DELETE
       state: present
       type: table
+  
   - name: Change guacamole_user sequence privs
     postgresql_privs:
       db: guacamole_db
       role: guacamole_user
-      login_user: postgres
-      login_password: password
       objs: ALL_IN_SCHEMA
       privs: SELECT,USAGE
       state: present
@@ -147,4 +140,5 @@
     service: name=postgresql state=restarted
   - name: restart guacd
     service: name=guacd state=restarted
+    ignore_errors: yes
   

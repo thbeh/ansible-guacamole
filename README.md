@@ -66,3 +66,11 @@ Run the commands above to verify the md5 checksum. If the result is the same as 
 
 6. Visit `your-hostname:8080/guacamole` and login (using credentials set in `USERS` dictionary)
 7. Use `Alt+Shift+Ctrl` to view the Guacamole menu
+
+This branch uses database authentication rather than `user-mapping.xml` 
+
+Default credentials are:
+
+	Username: guacadmin
+
+	Password: guacadmin
