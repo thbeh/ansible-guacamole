@@ -125,7 +125,7 @@
 - name: restart services (tomcat,postgresql,guacd)
   service: name={{ item }} state=restarted
   with_items:
-    - {{ TOMCAT_VERSION }}
+    - '{{ TOMCAT_VERSION }}'
     - postgresql
     - guacd
   ignore_errors: yes

@@ -9,6 +9,7 @@ Current tomcat version: **tomcat7** (Ubuntu), **tomcat** (CentOS)
 1. Need to variablize a lot of the database setup
 	- JDBC and guacamole-jdbc.jar versions
 	- paths
+2. Need to figure out how to add connection passwords directly into the database
  
 
 ----------------------------------------------------------------------------------

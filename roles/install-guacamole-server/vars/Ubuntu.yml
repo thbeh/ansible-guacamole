@@ -20,6 +20,8 @@ PACKAGES:
   - guacd
   - python-psycopg2
   - postgresql
+  - postgresql-contrib
+  - postgresql-contrib-9.3
   - libpq-dev
   # Optionals:
   - libfreerdp-dev
