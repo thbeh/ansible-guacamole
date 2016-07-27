@@ -1,7 +1,7 @@
 # ansible-guacamole
 
 Current guacamole version: **0.9.9**
-
+ 
 Current tomcat version: **tomcat7** (Ubuntu), **tomcat** (CentOS)
 
 ## Issues:
