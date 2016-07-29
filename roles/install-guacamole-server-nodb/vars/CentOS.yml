@@ -1,0 +1,24 @@
+---
+
+TOMCAT_VERSION: tomcat
+
+PACKAGES:
+  - cairo-devel
+  - libjpeg-devel
+  - libjpeg-turbo-devel
+  - libpng-devel
+  - libpng
+  - uuid-devel
+  - tomcat
+  - java-1.8.0-openjdk.x86_64
+  - guacd
+  # Optionals:
+  - freerdp-devel
+  - pango-devel
+  - libssh2-devel
+  - libtelnet-devel
+  - libvncserver-devel
+  - pulseaudio-libs-devel
+  - openssl-devel
+  - libvorbis-devel
+  - libwebp-devel

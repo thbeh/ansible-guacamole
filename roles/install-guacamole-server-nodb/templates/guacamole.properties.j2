@@ -1,0 +1,19 @@
+# Hostname and port of guacamole proxy
+guacd-hostname: localhost
+guacd-port:     {{ GUACD_PORT }}
+
+# Location to read extra .jar's from
+# lib-directory:  /var/lib/{{ TOMCAT_VERSION }}/webapps/guacamole/WEB-INF/classes
+
+# # Authentication provider class
+# auth-provider: net.sourceforge.guacamole.net.basic.BasicFileAuthenticationProvider
+
+# # Properties used by BasicFileAuthenticationProvider
+# basic-user-mapping: {{ GUACAMOLE_HOME }}/user-mapping.xml
+
+# postgresql properties
+postgresql-hostname: localhost
+postgresql-port: 5432
+postgresql-database: guacamole_db
+postgresql-username: guacamole_user
+postgresql-password: guacamole_db_pass

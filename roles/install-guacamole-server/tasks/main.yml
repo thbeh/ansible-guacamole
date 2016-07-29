@@ -51,17 +51,83 @@
   file: path='{{ GUACAMOLE_HOME }}' state=directory
   tags: configuration
 
-- tags: template
+- tags: database
+  become: yes
+  become_user: postgres
   block:
-  - name: Add guacamole.properties to "{{ GUACAMOLE_HOME }}"
-    template: src="guacamole.properties.j2" dest="{{ GUACAMOLE_HOME }}/guacamole.properties"
-  - name: Add user-mapping.xml to "{{ GUACAMOLE_HOME }}"
-    template: src="user-mapping.xml.j2" dest="{{ GUACAMOLE_HOME }}/user-mapping.xml" backup=yes
   
-- tags: restart
-  block:
-  - name: restart tomcat
-    service: name={{ TOMCAT_VERSION }} state=restarted
-  - name: restart guacd
-    service: name=guacd state=restarted
+  - name: Copy over guacamole-auth source
+    copy: src="files/guacamole-auth-jdbc-0.9.9.tar.gz" dest=/tmp/
+  
+  - name: Extract guacamole-auth
+    unarchive: src="/tmp/guacamole-auth-jdbc-0.9.9.tar.gz" copy=no dest="/tmp/"
+  
+  - name: restart postgresql
+    service: name=postgresql state=restarted
+  
+  - name: Create database
+    postgresql_db: name=guacamole_db state=present
+  
+  - name: Run schema on guacamole_db
+    shell: cat *.sql | psql -U postgres -d guacamole_db -f - chdir=/tmp/guacamole-auth-jdbc-0.9.9/postgresql/schema/
+  
+  - name: Create PostgreSQL guacamole user
+    postgresql_user:
+      name: guacamole_user
+      password: guacamole_db_pass
+      state: present
+      db: guacamole_db
+      priv: ALL
+  
+  - name: Change guacamole_user table privs
+    postgresql_privs:
+      db: guacamole_db
+      role: guacamole_user
+      objs: ALL_IN_SCHEMA
+      privs: SELECT,INSERT,UPDATE,DELETE
+      state: present
+      type: table
+  
+  - name: Change guacamole_user sequence privs
+    postgresql_privs:
+      db: guacamole_db
+      role: guacamole_user
+      objs: ALL_IN_SCHEMA
+      privs: SELECT,USAGE
+      state: present
+      type: sequence
+
+- name: Create {{ GUACAMOLE_HOME }}/extensions directory
+  file: path="{{ GUACAMOLE_HOME }}/extensions" state=directory
+  tags: database
+
+- name: Copy over guacamole-auth-jdbc-postgresql-0.9.9.jar to {{ GUACAMOLE_HOME }}/extensions
+  copy:
+    src: "/tmp/guacamole-auth-jdbc-0.9.9/postgresql/guacamole-auth-jdbc-postgresql-0.9.9.jar"
+    remote_src: True
+    dest: "{{ GUACAMOLE_HOME }}/extensions"
+  tags: database
+
+- name: Create {{ GUACAMOLE_HOME }}/lib directory
+  file: path="{{ GUACAMOLE_HOME }}/lib" state=directory
+  tags: database
+
+- name: Copy over postgresql-9.4.1209.jre7.jar to {{ GUACAMOLE_HOME }}/lib
+  copy:
+    src: "files/postgresql-9.4.1209.jre7.jar"
+    dest: "{{ GUACAMOLE_HOME }}/lib"
+  tags: database
+  
+- name: Add guacamole.properties to "{{ GUACAMOLE_HOME }}"
+  template: src="guacamole.properties.j2" dest="{{ GUACAMOLE_HOME }}/guacamole.properties"
+  tags: template
+  
+- name: restart services (tomcat,postgresql,guacd)
+  service: name={{ item }} state=restarted
+  with_items:
+    - '{{ TOMCAT_VERSION }}'
+    - postgresql
+    - guacd
+  ignore_errors: yes
+  tags: restart
   
