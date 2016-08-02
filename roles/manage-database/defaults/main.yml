@@ -4,17 +4,23 @@ database_user: chips
 
 database_name: salsa
 
-user_add: user
+atmo_user: user
 
 pass_add: password
 
 connection_add:
   name: Box1
-  protocol: vnc
-  param_list:
+  vnc_param_list:
     - param: hostname
       value: 0.0.0.0
     - param: port
       value: 5901
     - param: password
       value: password
+  ssh_param_list:
+    - param: hostname
+      value: 0.0.0.0
+    - param: port
+      value: 22
+    - param: username
+      value: '{{ atmo_user }}'
