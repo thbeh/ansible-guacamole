@@ -9,7 +9,7 @@ atmo_user: user
 pass_add: password
 
 connection_add:
-  name: Box1
+  name: "{{ ansible_default_ipv4.macaddress }}"
   vnc_param_list:
     - param: hostname
       value: 0.0.0.0
