@@ -27,106 +27,84 @@
 
 - tags: build, install
   block: 
-    - name: Build guacamole-server from source
+    - name: Build guacamole-server from source (configure)
       shell: ./configure --with-init-dir=/etc/init.d chdir=/tmp/guacamole-server-{{ GUACAMOLE_VERSION }}
-    - name: Build guacamole-server from source
+    - name: Build guacamole-server from source (make)
       shell: make chdir=/tmp/guacamole-server-{{ GUACAMOLE_VERSION }}
-    - name: Build guacamole-server from source
+    - name: Build guacamole-server from source (make install)
       shell: make install chdir=/tmp/guacamole-server-{{ GUACAMOLE_VERSION }}
-    - name: Build guacamole-server from source
+    - name: Build guacamole-server from source (ldconfig)
       shell: ldconfig
 
 - name: Copy over guacamole-{{ GUACAMOLE_VERSION }}.war
   copy: src="files/guacamole-{{ GUACAMOLE_VERSION }}.war" dest=/var/lib/{{ TOMCAT_VERSION }}/webapps/guacamole.war
   tags: file
 
-- tags: clear-files
-  block:
-  - name: delete guacamole-server-{{ GUACAMOLE_VERSION }}.tar.gz
-    file: path=/tmp/guacamole-server-{{ GUACAMOLE_VERSION }}.tar.gz state=absent
-  - name: delete guacamole-server-{{ GUACAMOLE_VERSION }} directory
-    file: path=/tmp/guacamole-server-{{ GUACAMOLE_VERSION }} state=absent
+- name: Cleanup temp files
+  file: path={{ item }} state=absent
+  with_items:
+    - /tmp/guacamole-server-{{ GUACAMOLE_VERSION }}.tar.gz
+    - /tmp/guacamole-server-{{ GUACAMOLE_VERSION }}
+  tags: cleanup
 
 - name: Make '{{ GUACAMOLE_HOME }}' directory
   file: path='{{ GUACAMOLE_HOME }}' state=directory
   tags: configuration
 
 - tags: database
-  become: yes
-  become_user: postgres
   block:
-  
   - name: Copy over guacamole-auth source
     copy: src="files/guacamole-auth-jdbc-0.9.9.tar.gz" dest=/tmp/
   
   - name: Extract guacamole-auth
     unarchive: src="/tmp/guacamole-auth-jdbc-0.9.9.tar.gz" copy=no dest="/tmp/"
   
-  - name: restart postgresql
-    service: name=postgresql state=restarted
-  
   - name: Create database
-    postgresql_db: name=guacamole_db state=present
+    mysql_db: name=salsa state=present
   
-  - name: Run schema on guacamole_db
-    shell: cat *.sql | psql -U postgres -d guacamole_db -f - chdir=/tmp/guacamole-auth-jdbc-0.9.9/postgresql/schema/
-  
-  - name: Create PostgreSQL guacamole user
-    postgresql_user:
-      name: guacamole_user
+  - name: Create MySQL guacamole user
+    mysql_user:
+      name: chips
       password: guacamole_db_pass
       state: present
-      db: guacamole_db
-      priv: ALL
-  
-  - name: Change guacamole_user table privs
-    postgresql_privs:
-      db: guacamole_db
-      role: guacamole_user
-      objs: ALL_IN_SCHEMA
-      privs: SELECT,INSERT,UPDATE,DELETE
-      state: present
-      type: table
-  
-  - name: Change guacamole_user sequence privs
-    postgresql_privs:
-      db: guacamole_db
-      role: guacamole_user
-      objs: ALL_IN_SCHEMA
-      privs: SELECT,USAGE
-      state: present
-      type: sequence
+      priv: salsa.*:SELECT,INSERT,UPDATE,DELETE
 
-- name: Create {{ GUACAMOLE_HOME }}/extensions directory
-  file: path="{{ GUACAMOLE_HOME }}/extensions" state=directory
-  tags: database
+  - name: Run schema on salsa
+    shell: cat schema/*.sql | mysql -u root salsa chdir="/tmp/guacamole-auth-jdbc-0.9.9/mysql/"
 
-- name: Copy over guacamole-auth-jdbc-postgresql-0.9.9.jar to {{ GUACAMOLE_HOME }}/extensions
-  copy:
-    src: "/tmp/guacamole-auth-jdbc-0.9.9/postgresql/guacamole-auth-jdbc-postgresql-0.9.9.jar"
-    remote_src: True
-    dest: "{{ GUACAMOLE_HOME }}/extensions"
-  tags: database
+  - name: Create {{ GUACAMOLE_HOME }}/extensions directory
+    file: path="{{ GUACAMOLE_HOME }}/extensions" state=directory
 
-- name: Create {{ GUACAMOLE_HOME }}/lib directory
-  file: path="{{ GUACAMOLE_HOME }}/lib" state=directory
-  tags: database
+  - name: Copy over guacamole-auth-jdbc-mysql-0.9.9.jar to {{ GUACAMOLE_HOME }}/extensions
+    copy:
+      src: "/tmp/guacamole-auth-jdbc-0.9.9/mysql/guacamole-auth-jdbc-mysql-0.9.9.jar"
+      remote_src: True
+      dest: "{{ GUACAMOLE_HOME }}/extensions"
 
-- name: Copy over postgresql-9.4.1209.jre7.jar to {{ GUACAMOLE_HOME }}/lib
-  copy:
-    src: "files/postgresql-9.4.1209.jre7.jar"
-    dest: "{{ GUACAMOLE_HOME }}/lib"
-  tags: database
+  - name: Create {{ GUACAMOLE_HOME }}/lib directory
+    file: path="{{ GUACAMOLE_HOME }}/lib" state=directory
+
+  - name: Copy over mysql-connector-java-5.1.39-bin.jar to {{ GUACAMOLE_HOME }}/lib
+    copy:
+      src: "files/mysql-connector-java-5.1.39-bin.jar"
+      dest: "{{ GUACAMOLE_HOME }}/lib"
   
 - name: Add guacamole.properties to "{{ GUACAMOLE_HOME }}"
   template: src="guacamole.properties.j2" dest="{{ GUACAMOLE_HOME }}/guacamole.properties"
   tags: template
+
+- name: Cleanup temp files
+  file: path={{ item }} state=absent
+  with_items:
+    - /tmp/guacamole-auth-jdbc-0.9.9.tar.gz
+    - /tmp/guacamole-auth-jdbc-0.9.9
+  tags: cleanup
   
-- name: restart services (tomcat,postgresql,guacd)
+- name: restart services (tomcat,mysql,guacd)
   service: name={{ item }} state=restarted
   with_items:
     - '{{ TOMCAT_VERSION }}'
-    - postgresql
+    - mysql
     - guacd
   ignore_errors: yes
   tags: restart

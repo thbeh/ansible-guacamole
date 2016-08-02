@@ -19,9 +19,7 @@ PACKAGES:
   - default-jdk
   - guacd
   - python-psycopg2
-  - postgresql
-  - postgresql-contrib
-  - postgresql-contrib-9.3
+  - mysql-server
   - libpq-dev
   # Optionals:
   - libfreerdp-dev

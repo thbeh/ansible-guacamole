@@ -70,3 +70,14 @@ Default credentials are:
 	Username: guacadmin
 
 	Password: guacadmin
+
+
+`INSERT INTO guacamole_user (username, password_salt, password_hash) VALUES ('newuser2','$2a$08$ZYAIE6Zs2C8McZ4m0VuToe', digest(crypt('password', '$2a$08$ZYAIE6Zs2C8McZ4m0VuToe'), 'sha256'));`
+
+`select password_salt from guacamole_user where username='newuser2';`
+
+`update guacamole_user set password_hash =\x1e250b87359eba6a216eb099e81e2cbf59505528b08aeaea13fa440f73f2e038' where username='myuser';`
+
+`update guacamole_user set password_salt = gen_salt('bf',8)::bytea;`
+
+
