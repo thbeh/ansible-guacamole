@@ -4,19 +4,6 @@
   include_vars: "{{ ansible_distribution }}.yml"
   tags: vars
 
-- tags: install
-  block:
-  - name: Add Oracle Java repository
-    apt_repository: repo="ppa:webupd8team/java"
-    when: ansible_distribution == "Ubuntu"
-  - name: Install epel-release for CentOS
-    yum: name=epel-release state=latest update_cache=yes
-    when: ansible_distribution == "CentOS"
-  - name: Install dependencies for guacamole
-    action: >
-      {{ ansible_pkg_mgr }} name={{ item }} state=latest
-    with_items: '{{ PACKAGES }}'
-
 - name: Copy over guacamole-server source
   copy: src="files/guacamole-server-{{ GUACAMOLE_VERSION }}.tar.gz" dest=/tmp/
   tags: file
@@ -25,27 +12,29 @@
   unarchive: src="/tmp/guacamole-server-{{ GUACAMOLE_VERSION }}.tar.gz" copy=no dest="/tmp/"
   tags: extract
 
-- tags: build, install
+- tags: install
   block: 
-    - name: Build guacamole-server from source (configure)
-      shell: ./configure --with-init-dir=/etc/init.d chdir=/tmp/guacamole-server-{{ GUACAMOLE_VERSION }}
-    - name: Build guacamole-server from source (make)
-      shell: make chdir=/tmp/guacamole-server-{{ GUACAMOLE_VERSION }}
-    - name: Build guacamole-server from source (make install)
-      shell: make install chdir=/tmp/guacamole-server-{{ GUACAMOLE_VERSION }}
-    - name: Build guacamole-server from source (ldconfig)
-      shell: ldconfig
+  - name: Add Oracle Java repository
+    apt_repository: repo="ppa:webupd8team/java"
+    when: ansible_distribution == "Ubuntu"
+  - name: Install epel-release for CentOS
+    yum: name=epel-release state=latest update_cache=yes
+    when: ansible_distribution == "CentOS"
+  - name: Install dependencies for guacamole
+    package: name={{ item }} state=latest
+    with_items: '{{ PACKAGES }}'
+  - name: Build guacamole-server from source (configure)
+    shell: ./configure --with-init-dir=/etc/init.d chdir=/tmp/guacamole-server-{{ GUACAMOLE_VERSION }}
+  - name: Build guacamole-server from source (make)
+    shell: make chdir=/tmp/guacamole-server-{{ GUACAMOLE_VERSION }}
+  - name: Build guacamole-server from source (make install)
+    shell: make install chdir=/tmp/guacamole-server-{{ GUACAMOLE_VERSION }}
+  - name: Build guacamole-server from source (ldconfig)
+    shell: ldconfig
 
 - name: Copy over guacamole-{{ GUACAMOLE_VERSION }}.war
   copy: src="files/guacamole-{{ GUACAMOLE_VERSION }}.war" dest=/var/lib/{{ TOMCAT_VERSION }}/webapps/guacamole.war
   tags: file
-
-- name: Cleanup temp files
-  file: path={{ item }} state=absent
-  with_items:
-    - /tmp/guacamole-server-{{ GUACAMOLE_VERSION }}.tar.gz
-    - /tmp/guacamole-server-{{ GUACAMOLE_VERSION }}
-  tags: cleanup
 
 - name: Make '{{ GUACAMOLE_HOME }}' directory
   file: path='{{ GUACAMOLE_HOME }}' state=directory
@@ -55,39 +44,22 @@
   block:
   - name: Copy over guacamole-auth source
     copy: src="files/guacamole-auth-jdbc-0.9.9.tar.gz" dest=/tmp/
-  
   - name: Extract guacamole-auth
     unarchive: src="/tmp/guacamole-auth-jdbc-0.9.9.tar.gz" copy=no dest="/tmp/"
-  
   - name: Create database
     mysql_db: name=salsa state=present
-  
   - name: Create MySQL guacamole user
-    mysql_user:
-      name: chips
-      password: guacamole_db_pass
-      state: present
-      priv: salsa.*:SELECT,INSERT,UPDATE,DELETE
-
+    mysql_user: name=chips password=guacamole_db_pass state=present priv=salsa.*:SELECT,INSERT,UPDATE,DELETE
   - name: Run schema on salsa
     shell: cat schema/*.sql | mysql -u root salsa chdir="/tmp/guacamole-auth-jdbc-0.9.9/mysql/"
-
   - name: Create {{ GUACAMOLE_HOME }}/extensions directory
     file: path="{{ GUACAMOLE_HOME }}/extensions" state=directory
-
   - name: Copy over guacamole-auth-jdbc-mysql-0.9.9.jar to {{ GUACAMOLE_HOME }}/extensions
-    copy:
-      src: "/tmp/guacamole-auth-jdbc-0.9.9/mysql/guacamole-auth-jdbc-mysql-0.9.9.jar"
-      remote_src: True
-      dest: "{{ GUACAMOLE_HOME }}/extensions"
-
+    copy: src="/tmp/guacamole-auth-jdbc-0.9.9/mysql/guacamole-auth-jdbc-mysql-0.9.9.jar" remote_src=True dest="{{ GUACAMOLE_HOME }}/extensions"
   - name: Create {{ GUACAMOLE_HOME }}/lib directory
     file: path="{{ GUACAMOLE_HOME }}/lib" state=directory
-
   - name: Copy over mysql-connector-java-5.1.39-bin.jar to {{ GUACAMOLE_HOME }}/lib
-    copy:
-      src: "files/mysql-connector-java-5.1.39-bin.jar"
-      dest: "{{ GUACAMOLE_HOME }}/lib"
+    copy: src="files/mysql-connector-java-5.1.39-bin.jar" dest="{{ GUACAMOLE_HOME }}/lib"
   
 - name: Add guacamole.properties to "{{ GUACAMOLE_HOME }}"
   template: src="guacamole.properties.j2" dest="{{ GUACAMOLE_HOME }}/guacamole.properties"
@@ -98,6 +70,8 @@
   with_items:
     - /tmp/guacamole-auth-jdbc-0.9.9.tar.gz
     - /tmp/guacamole-auth-jdbc-0.9.9
+    - /tmp/guacamole-server-{{ GUACAMOLE_VERSION }}.tar.gz
+    - /tmp/guacamole-server-{{ GUACAMOLE_VERSION }}
   tags: cleanup
   
 - name: restart services (tomcat,mysql,guacd)
