@@ -11,7 +11,7 @@
   tags: vars
 
 - name: Add new user
-  shell: echo "SET @salt = UNHEX(SHA2(UUID(), 256)); INSERT INTO guacamole_user (username, password_salt, password_hash) VALUES ('{{ atmo_user }}', @salt, UNHEX(SHA2(CONCAT('{{ pass_add }}', HEX(@salt)), 256)));" | mysql -u root {{ database_name }}
+  shell: echo "SET @salt = UNHEX(SHA2(UUID(), 256)); INSERT IGNORE INTO guacamole_user (username, password_salt, password_hash) VALUES ('{{ atmo_user }}', @salt, UNHEX(SHA2(CONCAT('{{ pass_add }}', HEX(@salt)), 256)));" | mysql -u root {{ database_name }}
   tags: user
 
 - name: Find and register the user_id of new user
@@ -21,36 +21,48 @@
 
 - tags: vnc
   block:
-    - name: Add new vnc connection
-      shell: echo "INSERT INTO guacamole_connection (connection_name, protocol) VALUES ('{{ connection_add.name }}', 'vnc');" | mysql -u root {{ database_name }}
+    - name: Check for a connectio with the same name
+      shell: echo "select * from guacamole_connection;" | mysql -u root salsa | grep {{ connection_add.name }} | wc -l
+      register: name_exists
 
-    - name: Find and register the connection_id of new vnc connection
-      shell: echo "select connection_id from guacamole_connection where connection_name = '{{ connection_add.name }}';" | mysql -u root salsa | grep -v connection_id
-      register: vnc_conn_id
+    - when: name_exists == 0
+      block:
+      - name: Add new vnc connection
+        shell: echo "INSERT INTO guacamole_connection (connection_name, protocol) VALUES ('{{ connection_add.name }}', 'vnc');" | mysql -u root {{ database_name }}
 
-    # - debug: var=vnc_conn_id.stdout
+      - name: Find and register the connection_id of new vnc connection
+        shell: echo "select connection_id from guacamole_connection where connection_name = '{{ connection_add.name }}';" | mysql -u root salsa | grep -v connection_id
+        register: vnc_conn_id
 
-    - name: Add parameters to the new vnc connection
-      shell: echo "INSERT INTO guacamole_connection_parameter VALUES ({{ vnc_conn_id.stdout }}, '{{ item.param }}', '{{ item.value }}');" | mysql -u root {{ database_name }}
-      with_items: "{{ connection_add.vnc_param_list }}"
+      # - debug: var=vnc_conn_id.stdout
+
+      - name: Add parameters to the new vnc connection
+        shell: echo "INSERT IGNORE INTO guacamole_connection_parameter VALUES ({{ vnc_conn_id.stdout }}, '{{ item.param }}', '{{ item.value }}');" | mysql -u root {{ database_name }}
+        with_items: "{{ connection_add.vnc_param_list }}"
 
 - tags: ssh
-  block: 
-    - name: Add new ssh connection
-      shell: echo "INSERT INTO guacamole_connection (connection_name, protocol) VALUES ('{{ connection_add.name }}-SSH', 'ssh');" | mysql -u root {{ database_name }}    
-    
-    - name: Find and register the connection_id of new ssh connection
-      shell: echo "select connection_id from guacamole_connection where connection_name = '{{ connection_add.name }}-SSH';" | mysql -u root salsa | grep -v connection_id
-      register: ssh_conn_id    
-    
-    # - debug: var=ssh_conn_id.stdout
-    
-    - name: Add parameters to the new ssh connection
-      shell: echo "INSERT INTO guacamole_connection_parameter VALUES ({{ ssh_conn_id.stdout }}, '{{ item.param }}', '{{ item.value }}');" | mysql -u root {{ database_name }}
-      with_items: "{{ connection_add.ssh_param_list }}"    
-    
-    - name: Add private-key parameter to the database
-      shell: echo "INSERT INTO guacamole_connection_parameter VALUES ({{ ssh_conn_id.stdout }}, 'private-key', '{{ priv_key.stdout }}');" | mysql -u root {{ database_name }}
+  block:
+    - name: Check for a connectio with the same name
+      shell: echo "select * from guacamole_connection;" | mysql -u root salsa | grep {{ connection_add.name }} | wc -l
+      register: name2_exists
+
+    - when: name2_exists == 0
+      block:
+      - name: Add new ssh connection
+        shell: echo "INSERT INTO guacamole_connection (connection_name, protocol) VALUES ('{{ connection_add.name }}-SSH', 'ssh');" | mysql -u root {{ database_name }}    
+      
+      - name: Find and register the connection_id of new ssh connection
+        shell: echo "select connection_id from guacamole_connection where connection_name = '{{ connection_add.name }}-SSH';" | mysql -u root salsa | grep -v connection_id
+        register: ssh_conn_id    
+      
+      # - debug: var=ssh_conn_id.stdout
+      
+      - name: Add parameters to the new ssh connection
+        shell: echo "INSERT IGNORE INTO guacamole_connection_parameter VALUES ({{ ssh_conn_id.stdout }}, '{{ item.param }}', '{{ item.value }}');" | mysql -u root {{ database_name }}
+        with_items: "{{ connection_add.ssh_param_list }}"
+      
+      - name: Add private-key parameter to the database
+        shell: echo "INSERT IGNORE INTO guacamole_connection_parameter VALUES ({{ ssh_conn_id.stdout }}, 'private-key', '{{ priv_key.stdout }}');" | mysql -u root {{ database_name }}
 
 - name: Add pub_key to client machine
   lineinfile: dest="/home/{{ atmo_user }}/.ssh/authorized_keys" line={{ pub_key.stdout }} state=present insertafter=EOF
