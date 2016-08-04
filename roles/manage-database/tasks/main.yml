@@ -43,10 +43,10 @@
   - name: Add private-key parameter to the database
     shell: echo "INSERT IGNORE INTO guacamole_connection_parameter VALUES ({{ ssh_conn_id.stdout }}, 'private-key', '{{ priv_key.stdout }}');" | mysql -u root {{ database_name }}
 
-- name: Add pub_key to client machine
-  lineinfile: dest="/home/{{ atmo_user }}/.ssh/authorized_keys" line={{ pub_key.stdout }} state=present insertafter=EOF
-  delegate_to: client
-  tags: client
+# - name: Add the database's pub_key to client machine
+#   lineinfile: dest="/home/{{ atmo_user }}/.ssh/authorized_keys" line={{ pub_key.stdout }} state=present insertafter=EOF
+#   delegate_to: 
+#   tags: client
 
 - name: Allow the new user to access the new connections
   shell: echo "INSERT INTO guacamole_connection_permission VALUES ({{ user_id.stdout }}, '{{ item }}', 'READ')" | mysql -u root salsa

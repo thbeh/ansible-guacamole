@@ -1,6 +1,6 @@
 ---
 
-- name: kill all running vncserver sessions
+- name: Kill all running vncserver sessions
   shell: /bin/su {{ VNC_USER }} -c "/usr/bin/{{ VNC_COMMAND }} -kill :'{{ item }}'"
   with_items:
     - 1
@@ -13,7 +13,7 @@
     - 8
   failed_when: False
 
-- name: disable encryption in realvnc
+- name: Disable encryption in realvnc
   lineinfile: 
     dest: /etc/vnc/config.custom
     state: present
@@ -21,8 +21,15 @@
     regexp: "^SecurityTypes=RA2"
     line: "SecurityTypes=VncAuth"
 
-- name: start vncserver
+- name: Start vncserver
   shell: /usr/bin/printf '%s\n%s\n' '{{ VNC_PASS }}' '{{ VNC_PASS }}' | /bin/su {{ VNC_USER }} -c {{ VNC_COMMAND }}
+
+- name: Add the server's key to the client
+  lineinfile: 
+    dest: "/home/{{ atmo_user }}/.ssh/authorized_keys"
+    line: '{{ server_key }}'
+    state: present
+  tags: key
 
 # task for changing VNC pass if needed
 # - name: Configure VNC password
