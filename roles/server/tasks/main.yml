@@ -52,6 +52,8 @@
     mysql_user: name=chips password=guacamole_db_pass state=present priv=salsa.*:SELECT,INSERT,UPDATE,DELETE
   - name: Run schema on salsa
     shell: cat schema/*.sql | mysql -u root salsa chdir="/tmp/guacamole-auth-jdbc-0.9.9/mysql/"
+  - name: Make connection names unique
+    shell: echo "ALTER TABLE guacamole_connection ADD UNIQUE (connection_name);" | mysql -u root {{ database_name }}
   - name: Create {{ GUACAMOLE_HOME }}/extensions directory
     file: path="{{ GUACAMOLE_HOME }}/extensions" state=directory
   - name: Copy over guacamole-auth-jdbc-mysql-0.9.9.jar to {{ GUACAMOLE_HOME }}/extensions
@@ -76,10 +78,7 @@
   
 - name: restart services (tomcat,mysql,guacd)
   service: name={{ item }} state=restarted
-  with_items:
-    - '{{ TOMCAT_VERSION }}'
-    - mysql
-    - guacd
+  with_items: [ '{{ TOMCAT_VERSION }}', mysql, guacd ]
   ignore_errors: yes
   tags: restart
   

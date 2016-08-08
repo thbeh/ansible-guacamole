@@ -4,4 +4,4 @@
   hosts: guac-server
   remote_user: root
   roles:
-    - roles/install-guacamole-server
+    - roles/server
