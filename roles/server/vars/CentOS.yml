@@ -11,7 +11,8 @@ PACKAGES:
   - uuid-devel
   - tomcat
   - java-1.8.0-openjdk.x86_64
-  - guacd
+  - MySQL-python.x86_64
+  - mysql-server
   # Optionals:
   - freerdp-devel
   - pango-devel

@@ -17,7 +17,6 @@ PACKAGES:
   - oracle-java8-installer
   - oracle-java8-set-default
   - default-jdk
-  - guacd
   - python-psycopg2
   - mysql-server
   - libpq-dev

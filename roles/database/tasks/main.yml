@@ -1,22 +1,26 @@
 ---
 
 # These tasks often use "ignore_errors: yes" rather than using "INSERT IGNORE" or 
-# similar MySQL syntax in order to preserve idempotency
+# similar MySQL syntax in order to preserve idempotency. More specifcally, in the
+# 'user' block, I don't use "INSERT IGNORE" because then password would be changed
+# whenever a connection is added.
 
 - name: register priv_key var
   shell: cat /root/.ssh/id_rsa
   register: priv_key
+  ignore_errors: yes
   tags: vars
 
 - tags: user
   block:
   - name: Add new user
-    shell: echo "SET @salt = UNHEX(SHA2(UUID(), 256)); INSERT IGNORE INTO guacamole_user (username, password_salt, password_hash) VALUES ('{{ atmo_user }}', @salt, UNHEX(SHA2(CONCAT('{{ pass_add }}', HEX(@salt)), 256)));" | mysql -u root {{ database_name }}
-  - name: Find and register the user_id of new user
+    shell: echo "SET @salt = UNHEX(SHA2(UUID(), 256)); INSERT INTO guacamole_user (username, password_salt, password_hash) VALUES ('{{ atmo_user }}', @salt, UNHEX(SHA2(CONCAT('{{ pass_add }}', HEX(@salt)), 256)));" | mysql -u root {{ database_name }}
+    ignore_errors: yes
+  - name: Find and register the user_id of the user
     shell: echo "SELECT user_id FROM guacamole_user WHERE username = '{{ atmo_user }}';" | mysql -u root salsa | grep -v user_id
     register: user_id
   - name: Allows the user to change their own password
-    shell: echo "INSERT IGNORE INTO guacamole_user_permission VALUES ({{ user_id.stdout }}, {{ user_id.stdout }}, 'UPDATE')" | mysql -u root salsa
+    shell: echo "INSERT IGNORE INTO guacamole_user_permission VALUES ({{ user_id.stdout }}, {{ user_id.stdout }}, 'UPDATE')" | mysql -u root {{ database_name }}
 
 - tags: vnc
   block:
@@ -54,3 +58,11 @@
   with_items: [ '{{ ssh_conn_id.stdout }}', '{{ vnc_conn_id.stdout }}' ]
   when: (ssh_add_out.rc == 0) and (vnc_add_out.rc == 0)
   tags: permissions
+
+- name: Add shell script to manage connections
+  copy: src="files/guacamole.sh" dest=/etc/cron.d mode="0744"
+  tags: cron
+
+- name: Add script to crontab
+  cron: job="/etc/cron.d/guacamole.sh" minute="*/5" state=present name="Removes inactive Guacamole connections"
+  tags: cron

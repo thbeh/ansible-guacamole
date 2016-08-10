@@ -42,6 +42,10 @@
 
 - tags: database
   block:
+  - name: Start/Restart MySQL
+    service: name={{ item }} state=restarted
+    with_items: [ mysql, mysqld ]
+    ignore_errors: yes
   - name: Copy over guacamole-auth source
     copy: src="files/guacamole-auth-jdbc-0.9.9.tar.gz" dest=/tmp/
   - name: Extract guacamole-auth
@@ -78,7 +82,7 @@
   
 - name: restart services (tomcat,mysql,guacd)
   service: name={{ item }} state=restarted
-  with_items: [ '{{ TOMCAT_VERSION }}', mysql, guacd ]
+  with_items: [ '{{ TOMCAT_VERSION }}', mysql, mysqld, guacd ]
   ignore_errors: yes
   tags: restart
   
