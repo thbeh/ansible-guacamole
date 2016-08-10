@@ -59,10 +59,9 @@
   when: (ssh_add_out.rc == 0) and (vnc_add_out.rc == 0)
   tags: permissions
 
-- name: Add shell script to manage connections
-  copy: src="files/guacamole.sh" dest=/etc/cron.d mode="0744"
-  tags: cron
-
-- name: Add script to crontab
-  cron: job="/etc/cron.d/guacamole.sh" minute="*/5" state=present name="Removes inactive Guacamole connections"
-  tags: cron
+- tags: cron
+  block:
+  - name: Add shell script to manage connections
+    copy: src="files/guacamole.sh" dest=/etc/cron.d mode="0744"
+  - name: Add script to crontab
+    cron: job="/etc/cron.d/guacamole.sh" minute="*/5" state=present name="Removes inactive Guacamole connections"
