@@ -1,0 +1,33 @@
+---
+
+TOMCAT_VERSION: tomcat7
+
+PACKAGES:
+  - apache2
+  - libcairo2-dev
+  - libjpeg-dev
+  - libjpeg8-dev
+  - libjpeg-turbo8-dev
+  - libpng12-dev
+  - libossp-uuid-dev
+  - "{{ TOMCAT_VERSION }}"
+  - "{{ TOMCAT_VERSION }}-common"
+  - libtomcat7-java
+  - software-properties-common
+  - oracle-java8-installer
+  - oracle-java8-set-default
+  - default-jdk
+  - python-psycopg2
+  - mysql-server
+  - libpq-dev
+  # Optionals:
+  - libfreerdp-dev
+  - libpango1.0-dev
+  - libssh2-1-dev
+  - libtelnet-dev
+  - libvncserver-dev
+  - libpulse-dev
+  - libssl-dev
+  - libvorbis-dev
+  - libwebp-dev
+

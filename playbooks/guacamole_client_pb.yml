@@ -1,7 +1,0 @@
----
-
-- name: Playbook to install Guacamole HTML5 VNC on client machines
-  hosts: guac-clients
-  remote_user: root
-  roles:
-    - roles/install-guacamole-client
