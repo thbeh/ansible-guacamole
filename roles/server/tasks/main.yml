@@ -23,14 +23,12 @@
   - name: Install dependencies for guacamole
     package: name={{ item }} state=latest
     with_items: '{{ PACKAGES }}'
-  - name: Build guacamole-server from source (configure)
-    shell: ./configure --with-init-dir=/etc/init.d chdir=/tmp/guacamole-server-{{ GUACAMOLE_VERSION }}
-  - name: Build guacamole-server from source (make)
-    shell: make chdir=/tmp/guacamole-server-{{ GUACAMOLE_VERSION }}
-  - name: Build guacamole-server from source (make install)
-    shell: make install chdir=/tmp/guacamole-server-{{ GUACAMOLE_VERSION }}
-  - name: Build guacamole-server from source (ldconfig)
-    shell: ldconfig
+  - name: Build guacamole-server from source
+    shell: '{{ item }}'
+    args:
+      chdir: /tmp/guacamole-server-{{ GUACAMOLE_VERSION }}
+      creates: /usr/local/sbin/guacd
+    with_items: [ ./configure --with-init-dir=/etc/init.d, make, make install, ldconfig ]
 
 - name: Copy over guacamole-{{ GUACAMOLE_VERSION }}.war
   copy: src="files/guacamole-{{ GUACAMOLE_VERSION }}.war" dest=/var/lib/{{ TOMCAT_VERSION }}/webapps/guacamole.war
