@@ -6,22 +6,26 @@ database_name: salsa
 
 database_passwd: password
 
+database_cmd: mysql --user={{ database_user }} --password={{ database_passwd }} {{ database_name }}
+
 atmo_user: user
 
 pass_add: password
 
+addr: 129.114.5.29
+
 connection_add:
-  name: "{{ ansible_default_ipv4.macaddress }}"
+  name: '{{ addr }}'
   vnc_param_list:
     - param: hostname
-      value: 0.0.0.0
+      value: '{{ addr }}'
     - param: port
       value: 5901
     - param: password
       value: password
   ssh_param_list:
     - param: hostname
-      value: 0.0.0.0
+      value: '{{ addr }}'
     - param: port
       value: 22
     - param: username

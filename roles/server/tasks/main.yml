@@ -53,11 +53,11 @@
   - name: Create MySQL guacamole user
     mysql_user: name={{ database_user }} password={{ database_passwd }} state=present priv={{ database_name }}.*:ALL
   - name: Run schema on {{ database_name }}
-    shell: cat schema/*.sql | mysql --user={{ database_user }} --password={{ database_passwd }} {{ database_name }} chdir="/tmp/guacamole-auth-jdbc-0.9.9/mysql/"
+    shell: cat schema/*.sql | {{ database_cmd }} chdir="/tmp/guacamole-auth-jdbc-0.9.9/mysql/"
   - name: Make connection names unique
-    shell: echo "ALTER TABLE guacamole_connection ADD UNIQUE (connection_name);" | mysql --user={{ database_user }} --password={{ database_passwd }} {{ database_name }}
+    shell: echo "ALTER TABLE guacamole_connection ADD UNIQUE (connection_name);" | {{ database_cmd }}
   - name: Change guacadmin password to a randomly generated string
-    shell: echo "SET @salt = UNHEX(SHA2(UUID(), 256)); UPDATE guacamole_user SET password_salt=@salt and password_hash=UNHEX(SHA2(CONCAT('UNHEX(SHA2(UUID(), 256))', HEX(@salt)), 256)) where username='guacadmin';" | mysql --user={{ database_user }} --password={{ database_passwd }} {{ database_name }}
+    shell: echo "SET @salt = UNHEX(SHA2(UUID(), 256)); UPDATE guacamole_user SET password_salt=@salt and password_hash=UNHEX(SHA2(CONCAT('UNHEX(SHA2(UUID(), 256))', HEX(@salt)), 256)) where username='guacadmin';" | {{ database_cmd }}
   - name: Create {{ GUACAMOLE_HOME }}/extensions directory
     file: path="{{ GUACAMOLE_HOME }}/extensions" state=directory
   - name: Copy over guacamole-auth-jdbc-mysql-0.9.9.jar to {{ GUACAMOLE_HOME }}/extensions

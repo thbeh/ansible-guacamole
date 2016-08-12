@@ -19,6 +19,7 @@ PACKAGES:
   - default-jdk
   - python-psycopg2
   - mysql-server
+  - python-mysqldb
   - libpq-dev
   # Optionals:
   - libfreerdp-dev

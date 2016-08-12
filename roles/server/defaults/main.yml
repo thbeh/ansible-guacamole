@@ -12,6 +12,8 @@ database_name: salsa
 
 database_passwd: password
 
+database_cmd: mysql --user={{ database_user }} --password={{ database_passwd }} {{ database_name }}
+
 # Reconfigure all variables in this dict to fit your needs
 # Leave "pass" blank for ssh protocols and "conn_pass" False
 CLIENTS:
