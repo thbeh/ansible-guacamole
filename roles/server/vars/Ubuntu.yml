@@ -10,6 +10,7 @@ PACKAGES:
   - libjpeg-turbo8-dev
   - libpng12-dev
   - libossp-uuid-dev
+  - libguac-dev
   - "{{ TOMCAT_VERSION }}"
   - "{{ TOMCAT_VERSION }}-common"
   - libtomcat7-java
