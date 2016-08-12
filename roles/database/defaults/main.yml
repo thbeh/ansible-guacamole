@@ -4,6 +4,8 @@ database_user: chips
 
 database_name: salsa
 
+database_passwd: password
+
 atmo_user: user
 
 pass_add: password

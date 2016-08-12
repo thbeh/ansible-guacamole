@@ -6,6 +6,12 @@ GUACAMOLE_HOME: /usr/share/{{ TOMCAT_VERSION }}/.guacamole
 
 GUACAMOLE_VERSION: 0.9.9
 
+database_user: chips
+
+database_name: salsa
+
+database_passwd: password
+
 # Reconfigure all variables in this dict to fit your needs
 # Leave "pass" blank for ssh protocols and "conn_pass" False
 CLIENTS:
