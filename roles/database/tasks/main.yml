@@ -1,6 +1,6 @@
 ---
 
-# These tasks often use "ignore_errors: yes" rather than using "INSERT IGNORE" or 
+# These tasks often use "ignore_errors: yes" rather than using "INSERT IGNORE" or
 # similar MySQL syntax in order to preserve idempotency. More specifcally, in the
 # 'user' block, I don't use "INSERT IGNORE" because then password would be changed
 # whenever a connection is added.
@@ -39,7 +39,7 @@
 - tags: ssh
   block:
   - name: Add new ssh connection
-    shell: echo "INSERT INTO guacamole_connection (connection_name, protocol) VALUES ('{{ connection_add.name }}-SSH', 'ssh');" | {{ database_cmd }}    
+    shell: echo "INSERT INTO guacamole_connection (connection_name, protocol) VALUES ('{{ connection_add.name }}-SSH', 'ssh');" | {{ database_cmd }}
     register: ssh_add_out
     ignore_errors: yes
   - name: Find and register the connection_id of new ssh connection
