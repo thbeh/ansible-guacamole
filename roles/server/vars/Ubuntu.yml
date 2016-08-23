@@ -15,8 +15,8 @@ PACKAGES:
   - "{{ TOMCAT_VERSION }}-common"
   - libtomcat7-java
   - software-properties-common
-  - oracle-java8-installer
-  - oracle-java8-set-default
+  # - oracle-java8-installer
+  # - oracle-java8-set-default
   - default-jdk
   - python-psycopg2
   - mysql-server
@@ -32,4 +32,3 @@ PACKAGES:
   - libssl-dev
   - libvorbis-dev
   - libwebp-dev
-

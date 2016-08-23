@@ -1,17 +1,11 @@
 ---
 
 database_user: chips
-
 database_name: salsa
-
 database_passwd: password
-
 database_cmd: mysql --user={{ database_user }} --password={{ database_passwd }} {{ database_name }}
-
 atmo_user: user
-
 pass_add: password
-
 addr: 129.114.5.29
 
 connection_add:

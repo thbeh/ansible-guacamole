@@ -28,7 +28,9 @@
     args:
       chdir: /tmp/guacamole-server-{{ GUACAMOLE_VERSION }}
       creates: /usr/local/sbin/guacd
-    with_items: [ ./configure --with-init-dir=/etc/init.d, make, make install, ldconfig ]
+    with_items: [ ./configure --with-init-dir=/etc/init.d, make, make install ]
+  - name: Run ldconfig so that guacd can run correctly
+    shell: ldconfig
 
 - name: Copy over guacamole-{{ GUACAMOLE_VERSION }}.war
   copy: src="files/guacamole-{{ GUACAMOLE_VERSION }}.war" dest=/var/lib/{{ TOMCAT_VERSION }}/webapps/guacamole.war
@@ -79,6 +81,7 @@
     - /tmp/guacamole-auth-jdbc-0.9.9
     - /tmp/guacamole-server-{{ GUACAMOLE_VERSION }}.tar.gz
     - /tmp/guacamole-server-{{ GUACAMOLE_VERSION }}
+  ignore_errors: yes
   tags: cleanup
 
 - name: restart services (tomcat,mysql,guacd)
