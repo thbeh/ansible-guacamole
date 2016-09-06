@@ -3,46 +3,10 @@
 GUACD_PORT: 4822
 GUACAMOLE_HOME: /usr/share/{{ TOMCAT_VERSION }}/.guacamole
 GUACAMOLE_VERSION: 0.9.9
-database_user: chips
-database_name: salsa
-database_passwd: password
+GUACAMOLE_CLIENT_VERSION: 0.9.10-incubating
+database_user: guacuser 
+database_name: guac
+database_passwd: password!234
 database_cmd: mysql --user={{ database_user }} --password={{ database_passwd }} {{ database_name }}
 
-# Reconfigure all variables in this dict to fit your needs
-# Leave "pass" blank for ssh protocols and "conn_pass" False
-CLIENTS:
-  1:
-    name: Box1
-    hostname: 0.0.0.0
-    port: 5901
-    pass: password
-    protocol: vnc
-    conn_pass: True
-  2:
-    name: Box2
-    hostname: 0.0.0.0
-    port: 5901
-    pass: password
-    protocol: vnc
-    conn_pass: True
-  3:
-    name: Box3
-    hostname: 0.0.0.0
-    port: 5901
-    pass: password
-    protocol: vnc
-    conn_pass: True
-  4:
-    name: Box4
-    hostname: 0.0.0.0
-    port: 5901
-    pass: password
-    protocol: vnc
-    conn_pass: True
-  5:
-    name: Box5
-    hostname: 0.0.0.0
-    port: 22
-    pass:
-    protocol: ssh
-    conn_pass: False
+ 

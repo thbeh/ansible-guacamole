@@ -31,15 +31,31 @@
     with_items: [ ./configure --with-init-dir=/etc/init.d, make, make install ]
   - name: Run ldconfig so that guacd can run correctly
     shell: ldconfig
+  - name: auto start guacd
+    command: update-rc.d guacd defaults
 
-- name: Copy over guacamole-{{ GUACAMOLE_VERSION }}.war
-  copy: src="files/guacamole-{{ GUACAMOLE_VERSION }}.war" dest=/var/lib/{{ TOMCAT_VERSION }}/webapps/guacamole.war
+- name: Copy over guacamole-{{ GUACAMOLE_CLIENT_VERSION }}.war
+  copy: src="files/guacamole-{{ GUACAMOLE_CLIENT_VERSION }}.war" dest=/var/lib/{{ TOMCAT_VERSION }}/webapps/guacamole.war
   tags: file
 
 - name: Make '{{ GUACAMOLE_HOME }}' directory
   file: path='{{ GUACAMOLE_HOME }}' state=directory
   tags: configuration
+#- name: MAKE /etc/guacamole directory
+#  file: path=/etc/guacamole state=directory
+  
+- name: Make a link to /etc/guacamole
+  file:
+    src: '{{ GUACAMOLE_HOME }}'
+    dest: /etc/guacamole
+    state: link
+    force: yes
+    follow: true
+ 
 
+
+  
+  
 - tags: database
   block:
   - name: Start/Restart MySQL
@@ -47,24 +63,24 @@
     with_items: [ mysql, mysqld ]
     ignore_errors: yes
   - name: Copy over guacamole-auth source
-    copy: src="files/guacamole-auth-jdbc-0.9.9.tar.gz" dest=/tmp/
+    copy: src="files/guacamole-auth-jdbc-{{ GUACAMOLE_CLIENT_VERSION }}.tar.gz" dest=/tmp/
   - name: Extract guacamole-auth
-    unarchive: src="/tmp/guacamole-auth-jdbc-0.9.9.tar.gz" copy=no dest="/tmp/"
+    unarchive: src="/tmp/guacamole-auth-jdbc-{{ GUACAMOLE_CLIENT_VERSION }}.tar.gz" copy=no dest="/tmp/"
   - name: Create database
     mysql_db: name={{ database_name }} state=present
   - name: Create MySQL guacamole user
     mysql_user: name={{ database_user }} password={{ database_passwd }} state=present priv={{ database_name }}.*:ALL
   - name: Run schema on {{ database_name }}
-    shell: cat schema/*.sql | {{ database_cmd }} chdir="/tmp/guacamole-auth-jdbc-0.9.9/mysql/"
+    shell: cat schema/*.sql | {{ database_cmd }} chdir="/tmp/guacamole-auth-jdbc-{{ GUACAMOLE_CLIENT_VERSION }}/mysql/"
     ignore_errors: true
-  - name: Make connection names unique
-    shell: echo "ALTER TABLE guacamole_connection ADD UNIQUE (connection_name);" | {{ database_cmd }}
+  #- name: Make connection names unique
+  #  shell: echo "ALTER TABLE guacamole_connection ADD UNIQUE (connection_name);" | {{ database_cmd }}
   # - name: Change guacadmin password to a randomly generated string
   #   shell: echo "SET @salt = UNHEX(SHA2(UUID(), 256)); UPDATE guacamole_user SET password_salt=@salt and password_hash=UNHEX(SHA2(CONCAT('UNHEX(SHA2(UUID(), 256))', HEX(@salt)), 256)) where username='guacadmin';" | {{ database_cmd }}
   - name: Create {{ GUACAMOLE_HOME }}/extensions directory
     file: path="{{ GUACAMOLE_HOME }}/extensions" state=directory
-  - name: Copy over guacamole-auth-jdbc-mysql-0.9.9.jar to {{ GUACAMOLE_HOME }}/extensions
-    copy: src="/tmp/guacamole-auth-jdbc-0.9.9/mysql/guacamole-auth-jdbc-mysql-0.9.9.jar" remote_src=True dest="{{ GUACAMOLE_HOME }}/extensions"
+  - name: Copy over guacamole-auth-jdbc-mysql-{{ GUACAMOLE_CLIENT_VERSION }}.jar to {{ GUACAMOLE_HOME }}/extensions
+    copy: src="/tmp/guacamole-auth-jdbc-{{ GUACAMOLE_CLIENT_VERSION }}/mysql/guacamole-auth-jdbc-mysql-{{ GUACAMOLE_CLIENT_VERSION }}.jar" remote_src=True dest="{{ GUACAMOLE_HOME }}/extensions"
   - name: Create {{ GUACAMOLE_HOME }}/lib directory
     file: path="{{ GUACAMOLE_HOME }}/lib" state=directory
   - name: Copy over mysql-connector-java-5.1.39-bin.jar to {{ GUACAMOLE_HOME }}/lib
@@ -73,18 +89,21 @@
 - name: Add guacamole.properties to "{{ GUACAMOLE_HOME }}"
   template: src="guacamole.properties.j2" dest="{{ GUACAMOLE_HOME }}/guacamole.properties"
   tags: template
-
+  
+- name: install ldap extention
+  tags: ldap
+  copy: src="files/guacamole-auth-ldap-{{ GUACAMOLE_CLIENT_VERSION }}.jar"  dest="{{ GUACAMOLE_HOME }}/extensions"
 - name: Cleanup temp files
   file: path={{ item }} state=absent
   with_items:
-    - /tmp/guacamole-auth-jdbc-0.9.9.tar.gz
-    - /tmp/guacamole-auth-jdbc-0.9.9
+    - /tmp/guacamole-auth-jdbc-{ GUACAMOLE_CLIENT_VERSION }}.tar.gz
+    - /tmp/guacamole-auth-jdbc-{ GUACAMOLE_CLIENT_VERSION }}
     - /tmp/guacamole-server-{{ GUACAMOLE_VERSION }}.tar.gz
     - /tmp/guacamole-server-{{ GUACAMOLE_VERSION }}
   ignore_errors: yes
   tags: cleanup
 
-- name: restart services (tomcat,mysql,guacd)
+- name: restart services (tomcat,mysql,guacd, mysqld for centos, mysql for ubuntu)
   service: name={{ item }} state=restarted
   with_items: [ '{{ TOMCAT_VERSION }}', mysql, mysqld, guacd ]
   ignore_errors: yes

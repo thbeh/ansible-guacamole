@@ -1,8 +1,9 @@
 ---
 
-TOMCAT_VERSION: tomcat7
+TOMCAT_VERSION: tomcat8
 
 PACKAGES:
+  - python
   - apache2
   - libcairo2-dev
   - libjpeg-dev
@@ -15,9 +16,9 @@ PACKAGES:
   - "{{ TOMCAT_VERSION }}-common"
   - libtomcat7-java
   - software-properties-common
-  # - oracle-java8-installer
+  - oracle-java8-installer
   # - oracle-java8-set-default
-  - default-jdk
+  # - default-jdk
   - python-psycopg2
   - mysql-server
   - python-mysqldb
