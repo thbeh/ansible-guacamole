@@ -32,7 +32,8 @@
   - name: Run ldconfig so that guacd can run correctly
     shell: ldconfig
   - name: auto start guacd
-    command: update-rc.d guacd defaults
+#   command: update-rc.d guacd defaults
+    command: chkconfig guacd on
 
 - name: Copy over guacamole-{{ GUACAMOLE_CLIENT_VERSION }}.war
   copy: src="files/guacamole-{{ GUACAMOLE_CLIENT_VERSION }}.war" dest=/var/lib/{{ TOMCAT_VERSION }}/webapps/guacamole.war
@@ -105,6 +106,6 @@
 
 - name: restart services (tomcat,mysql,guacd, mysqld for centos, mysql for ubuntu)
   service: name={{ item }} state=restarted
-  with_items: [ '{{ TOMCAT_VERSION }}', mysql, mysqld, guacd ]
+  with_items: [ '{{ TOMCAT_VERSION }}', mariadb, guacd ]
   ignore_errors: yes
   tags: restart
