@@ -65,7 +65,7 @@
   block:
   - name: Start/Restart MySQL
     service: name={{ item }} state=restarted
-    with_items: [ mysql, mysqld ]
+    with_items: [ mariadb ]
     ignore_errors: yes
   - name: Copy over guacamole-auth source
     copy: src="files/guacamole-auth-jdbc-{{ GUACAMOLE_CLIENT_VERSION }}.tar.gz" dest=/tmp/
