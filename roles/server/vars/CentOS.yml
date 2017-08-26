@@ -24,3 +24,7 @@ PACKAGES:
   - openssl-devel
   - libvorbis-devel
   - libwebp-devel
+  - nginx
+  - gcc
+  - git
+  - openssl

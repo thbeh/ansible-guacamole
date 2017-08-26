@@ -17,10 +17,10 @@
   - name: Add Oracle Java repository
     apt_repository: repo="ppa:webupd8team/java"
     when: ansible_distribution == "Ubuntu"
-  - name: Install Development Tools
-    yum:
-      name: "@Development tools"
-      state: present
+#  - name: Install Development Tools
+#    yum:
+#      name: "@Development tools"
+#      state: present
   - name: Install epel-release for CentOS
     yum: name=epel-release state=latest update_cache=yes
     when: ansible_distribution == "CentOS"
@@ -58,8 +58,47 @@
     follow: true
  
 
+- tags: guacd_ssl
+  block:
+    - name: Create SSL certs directory
+      file:
+        path: /etc/private
+        state: directory
+        mode: 0700
 
-  
+    - name: Create self-signed SSL cert and key
+      command: >
+        openssl req -new -nodes -x509 -subj "/C=US" -days 365 -newkey rsa:4096 -keyout key.pem -out cert.pem
+      args:
+        chdir: /etc/private
+        creates: /etc/private/key.pem
+
+    - name: Change permissions of SSL files
+      file:
+        path: "/etc/private/{{ item }}"
+        mode: 0600
+      with_items: [ 'cert.pem', 'key.pem' ]
+
+    - name: Add guacd.conf w/SSL paths to GUACAMOLE_HOME
+      template:
+        src: guacd.conf.j2
+        dest: "{{ GUACAMOLE_HOME }}/guacd.conf"
+
+  when: guacd_ssl == true
+
+- tags: reverse_proxy
+  block:
+    - name: Add nginx reverse proxy config to nginx
+      template:
+        src: nginx-guacamole.conf.j2
+        dest: "{{ nginx_dir }}/conf.d/nginx-guacamole.conf"
+
+    - name: Create symbolic link for nginx config to sites-enabled
+      file:
+        src: /etc/nginx/sites-available/nginx-guacamole.conf
+        dest: /etc/nginx/sites-enabled/nginx-guacamole.conf
+        state: link
+      when: ansible_distribution == "Ubuntu"
   
 - tags: database
   block:
