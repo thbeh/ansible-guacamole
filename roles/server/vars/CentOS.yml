@@ -28,3 +28,5 @@ PACKAGES:
   - gcc
   - git
   - openssl
+
+nginx_dir: /etc/nginx/conf.d

@@ -91,7 +91,7 @@
     - name: Add nginx reverse proxy config to nginx
       template:
         src: nginx-guacamole.conf.j2
-        dest: "{{ nginx_dir }}/conf.d/nginx-guacamole.conf"
+        dest: "{{ nginx_dir }}/nginx-guacamole.conf"
 
     - name: Create symbolic link for nginx config to sites-enabled
       file:
@@ -149,6 +149,6 @@
 
 - name: restart services (tomcat,mysql,guacd, mysqld for centos, mysql for ubuntu)
   service: name={{ item }} state=restarted
-  with_items: [ '{{ TOMCAT_VERSION }}', mariadb, guacd ]
+  with_items: [ '{{ TOMCAT_VERSION }}', mariadb, guacd, nginx ]
   ignore_errors: yes
   tags: restart

@@ -10,8 +10,11 @@ database_passwd: password!234
 database_cmd: mysql --user={{ database_user }} --password={{ database_passwd }} {{ database_name }}
 guacd_ssl: false
 nginx_port: 80
-nginx_https: 443
+nginx_https_port: 443
 
 https_cert: cert.pem
 https_key: key.pem
- 
+server_addr: localhost
+tomcat_port: 8080
+
+nginx_guac_loc: "/guacamole"
