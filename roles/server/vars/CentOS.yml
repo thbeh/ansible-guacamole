@@ -28,5 +28,6 @@ PACKAGES:
   - gcc
   - git
   - openssl
+  - liberation-mono-fonts
 
 nginx_dir: /etc/nginx/conf.d
