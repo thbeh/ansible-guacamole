@@ -8,7 +8,7 @@ database_user: guacuser
 database_name: guac
 database_passwd: password!234
 database_cmd: mysql --user={{ database_user }} --password={{ database_passwd }} {{ database_name }}
-guacd_ssl: false
+guacd_ssl: true
 nginx_port: 80
 nginx_https_port: 443
 
